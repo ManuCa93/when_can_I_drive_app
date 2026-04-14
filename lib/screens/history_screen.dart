@@ -320,12 +320,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                               strokeWidth: 2,
                               dashArray: [4, 4], 
                               label: VerticalLineLabel(
-                                show: true,
-                                alignment: Alignment.bottomLeft, 
-                                padding: const EdgeInsets.only(right: 6, bottom: 4),
-                                style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
-                                labelResolver: (_) => "0.0 g/l\n${DateFormat('HH:mm').format(exactSoberTime)}", 
-                              ),
+                              show: true,
+                              alignment: Alignment.bottomLeft, 
+                              padding: const EdgeInsets.only(right: 6, bottom: 35), // <-- Padding aumentato a 35 per alzare il testo
+                              style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
+                              labelResolver: (_) => "0.0 g/l\n${DateFormat('HH:mm').format(exactSoberTime)}", 
+                            ),
                             )
                           ];
                         }

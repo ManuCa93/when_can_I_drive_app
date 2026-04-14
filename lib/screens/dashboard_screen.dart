@@ -26,6 +26,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   
   // Variabile per ricalibrare l'animazione del cerchio quando aggiungi/rimuovi drink
   String _lastDrinksKey = '';
+  bool _isWaterDrank = false;
 
   @override
   void initState() {
@@ -290,39 +291,78 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               const SizedBox(height: 16),
             ],
 
-            // --- INDICATORE ACQUA CONSIGLIATA ---
+// --- INDICATORE ACQUA CONSIGLIATA ---
             if (totalAlcoholGrams > 0) ...[
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50], 
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.blue[100]!)
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.water_drop_rounded, color: Colors.blue[400], size: 32),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(loc.hydrationTitle, style: TextStyle(color: Colors.blue[800], fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 2),
-                          Text(
-                            loc.hydrationAdvice(recommendedWaterMl, recommendedWaterGlasses), 
-                            style: TextStyle(color: Colors.blue[700], fontSize: 13, height: 1.2)
-                          ),
-                        ],
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isWaterDrank = !_isWaterDrank;
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    // Cambia colore in verde se l'acqua è stata bevuta
+                    color: _isWaterDrank ? Colors.green[50] : Colors.blue[50], 
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _isWaterDrank ? Colors.green[200]! : Colors.blue[100]!
+                    )
+                  ),
+                  child: Row(
+                    children: [
+                      // Cambia l'icona se spuntato
+                      Icon(
+                        _isWaterDrank ? Icons.check_circle_rounded : Icons.water_drop_rounded, 
+                        color: _isWaterDrank ? Colors.green[400] : Colors.blue[400], 
+                        size: 32
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              loc.hydrationTitle, 
+                              style: TextStyle(
+                                color: _isWaterDrank ? Colors.green[800] : Colors.blue[800], 
+                                fontWeight: FontWeight.bold,
+                                decoration: _isWaterDrank ? TextDecoration.lineThrough : null, // Sbarra il testo se fatto
+                              )
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              loc.hydrationAdvice(recommendedWaterMl, recommendedWaterGlasses), 
+                              style: TextStyle(
+                                color: _isWaterDrank ? Colors.green[700] : Colors.blue[700], 
+                                fontSize: 13, 
+                                height: 1.2,
+                                decoration: _isWaterDrank ? TextDecoration.lineThrough : null,
+                              )
+                            ),
+                          ],
+                        ),
+                      ),
+                      // <-- LA TUA CHECKBOX
+                      Checkbox(
+                        value: _isWaterDrank,
+                        activeColor: Colors.green,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isWaterDrank = value ?? false;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
             ],
-
+            
             // --- DISCLAIMER PICCOLO GENERALE ---
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
