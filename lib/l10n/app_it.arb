@@ -81,5 +81,10 @@
   "themeTitle": "Tema dell'App",
   "themeSystem": "Sistema",
   "themeLight": "Chiaro",
-  "themeDark": "Scuro"
+  "themeDark": "Scuro",
+  "glassesCount": "Numero di bicchieri",
+  "manualEdit": "Modifica manuale",
+  "favoritesTitle": "Preferiti",
+  "savedToFavorites": "Salvato nei preferiti",
+  "removedFromFavorites": "Rimosso dai preferiti"
 }

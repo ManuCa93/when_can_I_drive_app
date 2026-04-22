@@ -118,3 +118,39 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     await prefs.setInt('app_theme', mode.index);
   }
 }
+
+// --- PROVIDER DRINK PREFERITI ---
+final favoriteDrinksProvider = StateNotifierProvider<FavoriteDrinksNotifier, List<Map<String, dynamic>>>((ref) {
+  return FavoriteDrinksNotifier();
+});
+
+class FavoriteDrinksNotifier extends StateNotifier<List<Map<String, dynamic>>> {
+  FavoriteDrinksNotifier() : super([]) {
+    _loadFavorites();
+  }
+
+  Future<void> _loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? favsData = prefs.getString('favorite_drinks');
+    if (favsData != null) {
+      final List<dynamic> decoded = jsonDecode(favsData);
+      state = List<Map<String, dynamic>>.from(decoded);
+    }
+  }
+
+  void addFavorite(Map<String, dynamic> fav) {
+    state = [...state, fav];
+    _saveFavorites();
+  }
+
+  void removeFavorite(String id) {
+    state = state.where((d) => d['id'] != id).toList();
+    _saveFavorites();
+  }
+
+  Future<void> _saveFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encoded = jsonEncode(state);
+    await prefs.setString('favorite_drinks', encoded);
+  }
+}

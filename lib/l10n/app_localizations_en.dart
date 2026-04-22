@@ -236,4 +236,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get glassesCount => 'Number of glasses';
+
+  @override
+  String get manualEdit => 'Manual edit';
+
+  @override
+  String get favoritesTitle => 'Favorites';
+
+  @override
+  String get savedToFavorites => 'Saved to favorites';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites';
 }

@@ -20,6 +20,8 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
   late String _drinkName;
   late double _volume;
   late double _abv;
+  int _glasses = 1;
+  bool _isManualEdit = false;
 
   final Map<String, Map<String, double>> _categories = {
     'Birra': {'vol': 330, 'abv': 5.0},
@@ -55,7 +57,18 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
       _drinkName = 'Birra';
       _volume = 330.0;
       _abv = 5.0;
+      _glasses = 1;
     }
+  }
+
+  void _updateVolumeFromGlasses() {
+    double baseVol = 0;
+    if (_selectedCategory == 'Cocktail' && _cocktails.containsKey(_drinkName)) {
+      baseVol = _cocktails[_drinkName]!['vol']!;
+    } else {
+      baseVol = _categories[_selectedCategory]!['vol']!;
+    }
+    _volume = baseVol * _glasses;
   }
 
   IconData _getCategoryIcon(String category) {
@@ -86,8 +99,9 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
     setState(() {
       _selectedCategory = category;
       _drinkName = category; // Salviamo il nome "chiave" (es: Birra)
-      _volume = _categories[category]!['vol']!;
+      _glasses = 1;
       _abv = _categories[category]!['abv']!;
+      _updateVolumeFromGlasses();
     });
   }
 
@@ -108,6 +122,51 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
       ref.read(drinksProvider.notifier).addDrink(drink);
     }
     Navigator.pop(context);
+  }
+
+  void _toggleFavorite() {
+    final favorites = ref.read(favoriteDrinksProvider);
+    final isFav = favorites.any((f) => f['name'] == _drinkName && f['volume'] == _volume && f['abv'] == _abv);
+    final loc = AppLocalizations.of(context)!;
+
+    if (isFav) {
+      final favToRemove = favorites.firstWhere((f) => f['name'] == _drinkName && f['volume'] == _volume && f['abv'] == _abv);
+      ref.read(favoriteDrinksProvider.notifier).removeFavorite(favToRemove['id']);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(loc.removedFromFavorites), duration: const Duration(seconds: 1), backgroundColor: Colors.red));
+    } else {
+      final newFav = {
+        'id': DateTime.now().millisecondsSinceEpoch.toString(),
+        'category': _selectedCategory,
+        'name': _drinkName,
+        'volume': _volume,
+        'abv': _abv,
+      };
+      ref.read(favoriteDrinksProvider.notifier).addFavorite(newFav);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(loc.savedToFavorites), duration: const Duration(seconds: 1), backgroundColor: Colors.green));
+    }
+  }
+
+  void _loadFavorite(Map<String, dynamic> fav) {
+    setState(() {
+      _selectedCategory = fav['category'];
+      _drinkName = fav['name'];
+      _volume = (fav['volume'] as num).toDouble();
+      _abv = (fav['abv'] as num).toDouble();
+      
+      double baseVol = 0;
+      if (_selectedCategory == 'Cocktail' && _cocktails.containsKey(_drinkName)) {
+        baseVol = _cocktails[_drinkName]!['vol']!;
+      } else {
+        baseVol = _categories[_selectedCategory]!['vol']!;
+      }
+
+      if (_volume > 0 && baseVol > 0 && (_volume % baseVol == 0)) {
+        _glasses = (_volume / baseVol).round();
+        _isManualEdit = false;
+      } else {
+        _isManualEdit = true;
+      }
+    });
   }
 
   Widget _buildPreciseSlider({
@@ -141,6 +200,9 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!;
     final isEditing = widget.drinkToEdit != null; 
+    
+    final favorites = ref.watch(favoriteDrinksProvider);
+    final isCurrentConfigFavorite = favorites.any((f) => f['name'] == _drinkName && f['volume'] == _volume && f['abv'] == _abv);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
@@ -153,13 +215,50 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
             Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)))),
             const SizedBox(height: 24),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(_getCategoryIcon(_selectedCategory), color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 12),
-                Text(isEditing ? "Edit" : loc.addDrinkTitle, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Icon(_getCategoryIcon(_selectedCategory), color: theme.colorScheme.primary, size: 28),
+                    const SizedBox(width: 12),
+                    Text(isEditing ? "Edit" : loc.addDrinkTitle, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(isCurrentConfigFavorite ? Icons.favorite : Icons.favorite_border, color: Colors.red, size: 28),
+                  onPressed: _toggleFavorite,
+                ),
               ],
             ),
             const SizedBox(height: 24),
+
+            if (favorites.isNotEmpty && !isEditing) ...[
+              Text(loc.favoritesTitle, style: const TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 45,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) {
+                    final fav = favorites[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: InputChip(
+                        avatar: Icon(_getCategoryIcon(fav['category']), size: 16, color: theme.colorScheme.primary),
+                        label: Text(fav['name'] != fav['category'] ? fav['name'] : _translateCat(fav['category'], loc)),
+                        backgroundColor: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
+                        labelStyle: TextStyle(color: theme.colorScheme.onSurface, fontSize: 13),
+                        onPressed: () => _loadFavorite(fav),
+                        onDeleted: () => ref.read(favoriteDrinksProvider.notifier).removeFavorite(fav['id']),
+                        deleteIcon: const Icon(Icons.close, size: 16),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const Divider(height: 40),
+            ],
 
             // --- STOMACO TRADOTTO ---
             Text(loc.stomachStatus, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -196,6 +295,10 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
                 return ChoiceChip(
                   avatar: Icon(_getCategoryIcon(cat), size: 16, color: isSelected ? theme.colorScheme.primary : Colors.grey),
                   label: Text(_translateCat(cat, loc)), // Traduzione della categoria
+                  labelStyle: TextStyle(
+                    color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  ),
                   selected: isSelected,
                   selectedColor: theme.colorScheme.primary.withOpacity(0.15),
                   onSelected: (_) => _selectCategory(cat),
@@ -215,12 +318,13 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: ActionChip(
                         label: Text(cocktail),
-                        backgroundColor: isSelected ? theme.colorScheme.primary : Colors.grey[100],
-                        labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black87, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+                        backgroundColor: isSelected ? theme.colorScheme.primary : (theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100]),
+                        labelStyle: TextStyle(color: isSelected ? Colors.white : theme.colorScheme.onSurface, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
                         onPressed: () => setState(() {
                           _drinkName = cocktail;
-                          _volume = _cocktails[cocktail]!['vol']!;
                           _abv = _cocktails[cocktail]!['abv']!;
+                          _glasses = 1;
+                          _updateVolumeFromGlasses();
                         }),
                       ),
                     );
@@ -230,18 +334,65 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
             ],
             const Divider(height: 40),
 
-            // --- SLIDER TRADOTTI ---
-            _buildPreciseSlider(
-              title: loc.volume,
-              value: _volume, min: 20, max: 1000, step: 10, unit: "ml", theme: theme,
-              onChanged: (val) => setState(() => _volume = val),
-            ),
-            
-            _buildPreciseSlider(
-              title: loc.abv,
-              value: _abv, min: 1, max: 80, step: 0.5, unit: "% ABV", theme: theme,
-              onChanged: (val) => setState(() => _abv = val),
-            ),
+            // --- CONTATORE BICCHIERI O SLIDER TRADOTTI ---
+            if (!_isManualEdit) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(loc.glassesCount, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  IconButton(
+                    icon: Icon(Icons.edit, color: theme.colorScheme.primary),
+                    onPressed: () => setState(() => _isManualEdit = true),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle_outline, size: 32),
+                    color: theme.colorScheme.primary,
+                    onPressed: _glasses > 1 ? () => setState(() { _glasses--; _updateVolumeFromGlasses(); }) : null,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text('$_glasses', style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle_outline, size: 32),
+                    color: theme.colorScheme.primary,
+                    onPressed: _glasses < 20 ? () => setState(() { _glasses++; _updateVolumeFromGlasses(); }) : null,
+                  ),
+                ],
+              ),
+              Center(
+                child: Text("${_volume.toInt()} ml • ${_abv.toStringAsFixed(1)}% ABV", style: const TextStyle(color: Colors.grey)),
+              ),
+            ] else ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(loc.manualEdit, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.orange)),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(() { 
+                      _isManualEdit = false;
+                      _updateVolumeFromGlasses(); // Reset to standard volume for glasses
+                    }),
+                  ),
+                ],
+              ),
+              _buildPreciseSlider(
+                title: loc.volume,
+                value: _volume, min: 20, max: 1000, step: 10, unit: "ml", theme: theme,
+                onChanged: (val) => setState(() => _volume = val),
+              ),
+              _buildPreciseSlider(
+                title: loc.abv,
+                value: _abv, min: 1, max: 80, step: 0.5, unit: "% ABV", theme: theme,
+                onChanged: (val) => setState(() => _abv = val),
+              ),
+            ],
             
             const SizedBox(height: 32),
 

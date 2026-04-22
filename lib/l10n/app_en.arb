@@ -81,5 +81,10 @@
   "themeTitle": "App Theme",
   "themeSystem": "System",
   "themeLight": "Light",
-  "themeDark": "Dark"
+  "themeDark": "Dark",
+  "glassesCount": "Number of glasses",
+  "manualEdit": "Manual edit",
+  "favoritesTitle": "Favorites",
+  "savedToFavorites": "Saved to favorites",
+  "removedFromFavorites": "Removed from favorites"
 }

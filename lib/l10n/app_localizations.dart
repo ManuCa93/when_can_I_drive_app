@@ -529,6 +529,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get themeDark;
+
+  /// No description provided for @glassesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of glasses'**
+  String get glassesCount;
+
+  /// No description provided for @manualEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual edit'**
+  String get manualEdit;
+
+  /// No description provided for @favoritesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favoritesTitle;
+
+  /// No description provided for @savedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to favorites'**
+  String get savedToFavorites;
+
+  /// No description provided for @removedFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
+  String get removedFromFavorites;
 }
 
 class _AppLocalizationsDelegate
