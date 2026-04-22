@@ -183,22 +183,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bacEffect1 =>
-      'Mild relaxation, slight euphoria. No noticeable deficits.';
+      'Mild relaxation, slight euphoria. No noticeable deficits. (New drivers/professionals: fines and points deduction).';
 
   @override
   String get bacEffect2 =>
-      'Lowered inhibitions, slowed reflexes. Driving impaired.';
+      'Lowered inhibitions, slowed reflexes. Driving impaired. (Standard drivers: heavy fines, license suspension. Penalties doubled in case of an accident).';
 
   @override
-  String get bacEffect3 => 'Poor coordination, altered balance and vision.';
+  String get bacEffect3 =>
+      'Poor coordination, altered balance and vision. (Severe fines, possible imprisonment up to 6 months, license suspension 6-12 months).';
 
   @override
   String get bacEffect4 =>
-      'Severe confusion, nausea, difficulty speaking and walking.';
+      'Severe confusion, nausea, difficulty speaking and walking. (Maximum fines, imprisonment 6-12 months, license suspension 1-2 years, vehicle confiscation).';
 
   @override
   String get bacEffect5 =>
-      'Severe risk of intoxication, possible loss of consciousness.';
+      'Severe risk of intoxication, possible loss of consciousness. (As above, with immediate license revocation. Extreme risk of coma or death).';
 
   @override
   String get over30 => 'Over 0.30';

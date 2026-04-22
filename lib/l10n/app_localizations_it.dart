@@ -183,23 +183,23 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get bacEffect1 =>
-      'Lieve rilassamento, leggera euforia. Nessun deficit evidente.';
+      'Lieve rilassamento, leggera euforia. Nessun deficit evidente. (Sanzioni per neopatentati/professionisti: multa €168-€672, decurtazione 5 punti).';
 
   @override
   String get bacEffect2 =>
-      'Minore inibizione, riflessi rallentati. Guida compromessa.';
+      'Minore inibizione, riflessi rallentati. Guida compromessa. (Sanzioni: multa €543-€2170, sospensione patente 3-6 mesi, -10 punti. Pene raddoppiate in caso di incidente).';
 
   @override
   String get bacEffect3 =>
-      'Scarsa coordinazione, alterazione dell\'equilibrio e della vista.';
+      'Scarsa coordinazione, alterazione dell\'equilibrio e della vista. (Sanzioni: multa €800-€3200, arresto fino a 6 mesi, sospensione patente 6-12 mesi).';
 
   @override
   String get bacEffect4 =>
-      'Forte confusione, nausea, difficoltà a parlare e camminare.';
+      'Forte confusione, nausea, difficoltà a parlare e camminare. (Sanzioni: multa €1500-€6000, arresto 6-12 mesi, sospensione patente 1-2 anni, confisca del veicolo).';
 
   @override
   String get bacEffect5 =>
-      'Rischio grave di intossicazione, possibile perdita di coscienza.';
+      'Rischio grave di intossicazione, possibile perdita di coscienza. (Sanzioni: come sopra, con revoca immediata della patente e confisca del mezzo. Rischio coma o morte).';
 
   @override
   String get over30 => 'Oltre 0.30';
