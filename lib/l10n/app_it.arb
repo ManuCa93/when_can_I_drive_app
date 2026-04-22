@@ -74,5 +74,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "newDriver": "Neopatentato",
+  "newDriverDesc": "Imposta il limite legale a 0.0 g/l (può essere modificato nelle impostazioni)"
 }

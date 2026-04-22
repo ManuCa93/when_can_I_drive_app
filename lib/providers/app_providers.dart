@@ -53,7 +53,7 @@ final userProvider = StateNotifierProvider<UserNotifier, UserProfile>((ref) {
 });
 
 class UserNotifier extends StateNotifier<UserProfile> {
-  UserNotifier() : super(UserProfile(weight: 70, height: 170, age: 25, gender: 'M', isOnboarded: false)) {
+  UserNotifier() : super(UserProfile(weight: 70, height: 170, age: 25, gender: 'M', isNewDriver: false, isOnboarded: false)) {
     _loadUser();
   }
 
@@ -67,6 +67,7 @@ class UserNotifier extends StateNotifier<UserProfile> {
         height: map['height'],
         age: map['age'],
         gender: map['gender'],
+        isNewDriver: map['isNewDriver'] ?? false,
         isOnboarded: map['isOnboarded'],
       );
     }
@@ -85,6 +86,7 @@ class UserNotifier extends StateNotifier<UserProfile> {
       'height': user.height,
       'age': user.age,
       'gender': user.gender,
+      'isNewDriver': user.isNewDriver,
       'isOnboarded': user.isOnboarded,
     });
     await prefs.setString('user_profile', userData);

@@ -17,6 +17,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   double _height = 170;
   int _age = 25;
   String _gender = 'M';
+  bool _isNewDriver = false;
   bool _acceptedDisclaimer = false;
 
   Widget _buildPreciseSlider({
@@ -106,6 +107,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   
                   const SizedBox(height: 24),
                   
+                  // Neopatentato Switch
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(12)),
+                    child: SwitchListTile(
+                      activeColor: theme.colorScheme.primary,
+                      title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(loc.newDriverDesc, style: const TextStyle(fontSize: 12)),
+                      value: _isNewDriver,
+                      onChanged: (val) => setState(() => _isNewDriver = val),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
                   // Disclaimer tradotto
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -137,7 +153,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                       onPressed: _acceptedDisclaimer ? () {
                         ref.read(userProvider.notifier).state = UserProfile(
-                          weight: _weight, height: _height, age: _age, gender: _gender, isOnboarded: true
+                          weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
                         );
                       } : null,
                       child: Text(loc.startBtn, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),

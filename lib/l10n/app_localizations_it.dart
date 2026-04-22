@@ -214,4 +214,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String hydrationAdvice(int ml, int glasses) {
     return 'Bevi almeno $ml ml di acqua (circa $glasses bicchieri) per supportare lo smaltimento.';
   }
+
+  @override
+  String get newDriver => 'Neopatentato';
+
+  @override
+  String get newDriverDesc =>
+      'Imposta il limite legale a 0.0 g/l (può essere modificato nelle impostazioni)';
 }

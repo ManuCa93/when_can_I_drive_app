@@ -213,4 +213,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String hydrationAdvice(int ml, int glasses) {
     return 'Drink at least $ml ml of water (about $glasses glasses) to support recovery.';
   }
+
+  @override
+  String get newDriver => 'New Driver';
+
+  @override
+  String get newDriverDesc =>
+      'Sets the legal limit to 0.0 g/l (can be changed in settings)';
 }

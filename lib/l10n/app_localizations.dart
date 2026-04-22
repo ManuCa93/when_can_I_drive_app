@@ -487,6 +487,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drink at least {ml} ml of water (about {glasses} glasses) to support recovery.'**
   String hydrationAdvice(int ml, int glasses);
+
+  /// No description provided for @newDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'New Driver'**
+  String get newDriver;
+
+  /// No description provided for @newDriverDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the legal limit to 0.0 g/l (can be changed in settings)'**
+  String get newDriverDesc;
 }
 
 class _AppLocalizationsDelegate

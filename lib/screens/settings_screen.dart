@@ -16,6 +16,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   late double _height;
   late int _age;
   late String _gender;
+  late bool _isNewDriver;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _height = currentUser.height;
     _age = currentUser.age;
     _gender = currentUser.gender;
+    _isNewDriver = currentUser.isNewDriver;
   }
 
   Widget _buildPreciseSlider({
@@ -111,6 +113,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const SizedBox(height: 16),
                 _buildPreciseSlider(title: loc.ageLabel, value: _age.toDouble(), min: 18, max: 99, step: 1, unit: loc.unitYears, theme: theme, onChanged: (v) => setState(() => _age = v.toInt())),
                 
+                const SizedBox(height: 24),
+                
+                // Neopatentato Switch
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(12)),
+                  child: SwitchListTile(
+                    activeColor: theme.colorScheme.primary,
+                    title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(loc.newDriverDesc, style: const TextStyle(fontSize: 12)),
+                    value: _isNewDriver,
+                    onChanged: (val) => setState(() => _isNewDriver = val),
+                  ),
+                ),
+                
                 const SizedBox(height: 40),
                 
                 SizedBox(
@@ -124,7 +141,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () {
                       // Salviamo i nuovi dati e torniamo indietro
                       ref.read(userProvider.notifier).state = UserProfile(
-                        weight: _weight, height: _height, age: _age, gender: _gender, isOnboarded: true
+                        weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
                       );
                       Navigator.pop(context);
                     },
