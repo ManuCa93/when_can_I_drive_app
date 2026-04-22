@@ -70,6 +70,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final n = name.toLowerCase();
     if (n == 'birra' || n == 'beer') return loc.beer;
     if (n == 'vino' || n == 'wine') return loc.wine;
+    if (n == 'prosecco') return loc.prosecco;
     if (n == 'shot') return loc.shot;
     if (n == 'amaro' || n == 'bitter') return loc.amaro;
     if (n == 'cocktail') return loc.cocktail;
@@ -80,7 +81,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   IconData _getDrinkIcon(String name) {
     final n = name.toLowerCase();
     if (n.contains('birra') || n.contains('beer')) return Icons.sports_bar_rounded;
-    if (n.contains('vino') || n.contains('wine')) return Icons.wine_bar_rounded;
+    if (n.contains('vino') || n.contains('wine') || n.contains('prosecco')) return Icons.wine_bar_rounded;
     if (n.contains('shot') || n.contains('amaro') || n.contains('bitter')) return Icons.liquor_rounded;
     if (n.contains('cocktail') || n.contains('spritz') || n.contains('gin') || n.contains('negroni')) return Icons.local_bar_rounded;
     return Icons.local_drink_rounded;

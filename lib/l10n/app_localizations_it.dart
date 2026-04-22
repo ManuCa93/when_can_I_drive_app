@@ -221,4 +221,7 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get newDriverDesc =>
       'Imposta il limite legale a 0.0 g/l (può essere modificato nelle impostazioni)';
+
+  @override
+  String get prosecco => 'Prosecco';
 }

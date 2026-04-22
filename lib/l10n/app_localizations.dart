@@ -499,6 +499,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sets the legal limit to 0.0 g/l (can be changed in settings)'**
   String get newDriverDesc;
+
+  /// No description provided for @prosecco.
+  ///
+  /// In en, this message translates to:
+  /// **'Prosecco'**
+  String get prosecco;
 }
 
 class _AppLocalizationsDelegate

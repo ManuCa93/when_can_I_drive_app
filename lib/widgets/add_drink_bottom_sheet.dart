@@ -24,6 +24,7 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
   final Map<String, Map<String, double>> _categories = {
     'Birra': {'vol': 330, 'abv': 5.0},
     'Vino': {'vol': 150, 'abv': 12.0},
+    'Prosecco': {'vol': 150, 'abv': 11.0},
     'Shot': {'vol': 40, 'abv': 40.0},
     'Amaro': {'vol': 60, 'abv': 30.0},
     'Cocktail': {'vol': 150, 'abv': 15.0},
@@ -60,7 +61,8 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
   IconData _getCategoryIcon(String category) {
     switch (category) {
       case 'Birra': return Icons.sports_bar_rounded;
-      case 'Vino': return Icons.wine_bar_rounded;
+      case 'Vino': 
+      case 'Prosecco': return Icons.wine_bar_rounded;
       case 'Shot':
       case 'Amaro': return Icons.liquor_rounded;
       case 'Cocktail': return Icons.local_bar_rounded;
@@ -73,6 +75,7 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
     switch (cat) {
       case 'Birra': return loc.beer;
       case 'Vino': return loc.wine;
+      case 'Prosecco': return loc.prosecco;
       case 'Shot': return loc.shot;
       case 'Amaro': return loc.amaro;
       default: return loc.cocktail;

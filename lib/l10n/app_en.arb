@@ -76,5 +76,6 @@
     }
   },
   "newDriver": "New Driver",
-  "newDriverDesc": "Sets the legal limit to 0.0 g/l (can be changed in settings)"
+  "newDriverDesc": "Sets the legal limit to 0.0 g/l (can be changed in settings)",
+  "prosecco": "Prosecco"
 }
