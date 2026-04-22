@@ -22,7 +22,7 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
+      extendBody: false,
       // --- ANIMAZIONE PREMIUM TRA LE PAGINE ---
       // --- NUOVA ANIMAZIONE PREMIUM (MANTIENE IN VITA LE PAGINE) ---
       body: Stack(

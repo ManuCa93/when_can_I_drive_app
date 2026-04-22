@@ -395,7 +395,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               child: recentDrinks.isEmpty
                   ? Center(child: Text(loc.noDrinks, style: TextStyle(color: Colors.grey[500], fontSize: 16)))
                   : ListView.builder(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 100),
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 16),
                       itemCount: recentDrinks.length,
                       itemBuilder: (context, index) {
                         final drink = recentDrinks[recentDrinks.length - 1 - index];
