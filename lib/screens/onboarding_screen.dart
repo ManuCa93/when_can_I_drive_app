@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_profile.dart';
 import '../providers/app_providers.dart';
+import '../utils/notification_service.dart';
 import '../l10n/app_localizations.dart'; // <-- IMPORT DELLE TRADUZIONI
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -151,7 +152,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      onPressed: _acceptedDisclaimer ? () {
+                      onPressed: _acceptedDisclaimer ? () async {
+                        await NotificationService.requestPermissions();
                         ref.read(userProvider.notifier).state = UserProfile(
                           weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
                         );

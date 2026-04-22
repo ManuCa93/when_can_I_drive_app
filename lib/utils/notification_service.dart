@@ -18,6 +18,14 @@ class NotificationService {
     );
   }
 
+  static Future<void> requestPermissions() async {
+    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+        _notificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+
+    await androidImplementation?.requestNotificationsPermission();
+  }
+
   static Future<void> updateBacNotification({
     required double currentBac,
     required String targetTime,
