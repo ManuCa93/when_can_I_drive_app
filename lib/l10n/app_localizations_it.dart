@@ -224,4 +224,16 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get prosecco => 'Prosecco';
+
+  @override
+  String get themeTitle => 'Tema dell\'App';
+
+  @override
+  String get themeSystem => 'Sistema';
+
+  @override
+  String get themeLight => 'Chiaro';
+
+  @override
+  String get themeDark => 'Scuro';
 }

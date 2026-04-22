@@ -68,6 +68,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!; // <-- INIZIALIZZAZIONE LINGUA
+    final currentTheme = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,6 +106,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
+
+                // Selettore Tema
+                Text(loc.themeTitle, style: const TextStyle(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: SegmentedButton<ThemeMode>(
+                    segments: [
+                      ButtonSegment(value: ThemeMode.system, label: Text(loc.themeSystem)),
+                      ButtonSegment(value: ThemeMode.light, label: Text(loc.themeLight)),
+                      ButtonSegment(value: ThemeMode.dark, label: Text(loc.themeDark)),
+                    ],
+                    selected: {currentTheme},
+                    onSelectionChanged: (set) {
+                      ref.read(themeProvider.notifier).setTheme(set.first);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 32),
                 
                 // TRADOTTO TUTTO: Titoli e unità di misura
                 _buildPreciseSlider(title: loc.weightLabel, value: _weight, min: 40, max: 150, step: 1, unit: loc.unitKg, theme: theme, onChanged: (v) => setState(() => _weight = v)),
@@ -118,7 +138,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 // Neopatentato Switch
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
                   child: SwitchListTile(
                     activeColor: theme.colorScheme.primary,
                     title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),

@@ -137,7 +137,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: RichText(
         text: TextSpan(
-          style: const TextStyle(fontSize: 13, color: Colors.black87),
+          style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
           children: [
             TextSpan(text: "$range g/l: ", style: const TextStyle(fontWeight: FontWeight.bold)),
             TextSpan(text: effect),
@@ -242,7 +242,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   percent: animatedValue, 
                   circularStrokeCap: CircularStrokeCap.round,
                   progressColor: circleColor,
-                  backgroundColor: Colors.grey[200]!,
+                  backgroundColor: Colors.grey.withOpacity(0.2),
                   center: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -276,7 +276,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(color: Colors.red[50], borderRadius: BorderRadius.circular(20)),
+                  decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -306,10 +306,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     // Cambia colore in verde se l'acqua è stata bevuta
-                    color: _isWaterDrank ? Colors.green[50] : Colors.blue[50], 
+                    color: _isWaterDrank ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1), 
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: _isWaterDrank ? Colors.green[200]! : Colors.blue[100]!
+                      color: _isWaterDrank ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3)
                     )
                   ),
                   child: Row(
@@ -368,12 +368,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey[300]!)),
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.withOpacity(0.2))),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, size: 18, color: Colors.grey[700]),
+                  Icon(Icons.info_outline, size: 18, color: Colors.grey[500]),
                   const SizedBox(width: 10),
-                  Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black54))),
+                  Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey))),
                 ],
               ),
             ), 

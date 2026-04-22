@@ -138,11 +138,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.orange, 
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: Colors.orange,
               onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: Colors.black,
             ),
           ),
           child: child!,
@@ -222,10 +220,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             : loc.customDates, 
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: hoursSpan == null ? Colors.white : Colors.black87,
+                          color: hoursSpan == null ? Colors.white : theme.colorScheme.onSurface,
                         )
                       ),
-                      backgroundColor: hoursSpan == null ? Colors.orange : Colors.grey[200],
+                      backgroundColor: hoursSpan == null ? Colors.orange : theme.colorScheme.surfaceContainerHighest ?? Colors.grey.withOpacity(0.2),
                       onPressed: _pickDateRange,
                     ),
                   ),
@@ -450,7 +448,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               child: Text(
                 loc.disclaimer,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
+                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey),
               ),
             ),
             const SizedBox(height: 20),

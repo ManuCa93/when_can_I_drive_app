@@ -111,7 +111,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   // Neopatentato Switch
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
                     child: SwitchListTile(
                       activeColor: theme.colorScheme.primary,
                       title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -126,14 +126,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   // Disclaimer tradotto
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.orange[50], borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: theme.colorScheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
                     child: CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       controlAffinity: ListTileControlAffinity.leading,
                       activeColor: theme.colorScheme.primary,
                       title: Text(
                         loc.onboardingDisclaimer,
-                        style: const TextStyle(fontSize: 12, color: Colors.black87),
+                        style: const TextStyle(fontSize: 12),
                       ),
                       value: _acceptedDisclaimer,
                       onChanged: (bool? value) {

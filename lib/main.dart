@@ -41,6 +41,7 @@ class SoberTrackApp extends ConsumerWidget {
       ],
       // ------------------------------
 
+      themeMode: ref.watch(themeProvider),
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
@@ -70,6 +71,37 @@ class SoberTrackApp extends ConsumerWidget {
           iconTheme: IconThemeData(color: Colors.black87),
           titleTextStyle: TextStyle(
             color: Colors.black87,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      
+      darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+        scaffoldBackgroundColor: Colors.grey[900],
+        colorScheme: ColorScheme.dark(
+          primary: Colors.orange[600]!,       
+          onPrimary: Colors.white,
+          secondary: Colors.orange[400]!,
+          surface: Colors.grey[900]!,
+          onSurface: Colors.white,       
+          outline: Colors.grey[800],          
+        ),
+        cardTheme: CardThemeData(
+          color: Colors.grey[850],             
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: Colors.grey[800]!, width: 1),
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey[900],
+          elevation: 0,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),

@@ -144,7 +144,7 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-      decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
+      decoration: BoxDecoration(color: theme.colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(32))),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

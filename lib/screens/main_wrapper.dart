@@ -21,6 +21,9 @@ class _MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       extendBody: false,
       // --- ANIMAZIONE PREMIUM TRA LE PAGINE ---
@@ -57,7 +60,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 width: 120, // Larghezza fissa per precisione millimetrica
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB).withOpacity(0.98),
+                  color: isDark ? Colors.grey[850] : const Color(0xFFEBEBEB).withOpacity(0.98),
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 15, offset: const Offset(0, 8)),
@@ -76,7 +79,7 @@ class _MainWrapperState extends State<MainWrapper> {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: isDark ? Colors.grey[700] : Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)
@@ -88,8 +91,8 @@ class _MainWrapperState extends State<MainWrapper> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildNavIcon(0, Icons.data_usage_rounded),
-                        _buildNavIcon(1, Icons.stacked_line_chart_rounded),
+                        _buildNavIcon(0, Icons.data_usage_rounded, isDark),
+                        _buildNavIcon(1, Icons.stacked_line_chart_rounded, isDark),
                       ],
                     ),
                   ],
@@ -139,7 +142,7 @@ class _MainWrapperState extends State<MainWrapper> {
     );
   }
 
-  Widget _buildNavIcon(int index, IconData icon) {
+  Widget _buildNavIcon(int index, IconData icon, bool isDark) {
     final isSelected = _currentIndex == index;
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
@@ -153,7 +156,9 @@ class _MainWrapperState extends State<MainWrapper> {
           duration: const Duration(milliseconds: 200),
           child: Icon(
             icon,
-            color: isSelected ? Colors.black : Colors.black38,
+            color: isSelected 
+                ? (isDark ? Colors.white : Colors.black) 
+                : (isDark ? Colors.white38 : Colors.black38),
             size: 24,
           ),
         ),

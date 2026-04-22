@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_profile.dart';
@@ -90,5 +91,30 @@ class UserNotifier extends StateNotifier<UserProfile> {
       'isOnboarded': user.isOnboarded,
     });
     await prefs.setString('user_profile', userData);
+  }
+}
+
+// --- PROVIDER TEMA ---
+final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
+  return ThemeNotifier();
+});
+
+class ThemeNotifier extends StateNotifier<ThemeMode> {
+  ThemeNotifier() : super(ThemeMode.system) {
+    _loadTheme();
+  }
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final int? themeIndex = prefs.getInt('app_theme');
+    if (themeIndex != null) {
+      state = ThemeMode.values[themeIndex];
+    }
+  }
+
+  void setTheme(ThemeMode mode) async {
+    state = mode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('app_theme', mode.index);
   }
 }
