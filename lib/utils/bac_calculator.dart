@@ -8,37 +8,38 @@ class BacCalculator {
   static double calculateCurrentBAC(List<DrinkLog> drinks, UserProfile user) {
     if (drinks.isEmpty) return 0.0;
 
-    double totalBac = 0.0;
-    final now = DateTime.now();
+    // Ordiniamo i drink per timestamp per calcolare lo smaltimento sequenziale
+    final sortedDrinks = List<DrinkLog>.from(drinks)
+      ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
-    // Costante di Widmark: 0.68 per gli uomini, 0.55 per le donne
+    double currentBac = 0.0;
+    DateTime lastTime = sortedDrinks.first.timestamp;
     final r = user.gender == 'M' ? 0.68 : 0.55;
 
-    for (final drink in drinks) {
-      // Grammi di alcol = Volume (ml) * (ABV / 100) * 0.8 (densità dell'alcol)
-      final gramsAlcohol = drink.volume * (drink.abv / 100) * 0.8;
-      
-      // BAC teorico iniziale per questo drink
-      final drinkBac = gramsAlcohol / (user.weight * r);
-
-      // --- IL SEGRETO È QUI: Usiamo i SECONDI invece dei minuti o delle ore! ---
-      final elapsedSeconds = now.difference(drink.timestamp).inSeconds;
-      if (elapsedSeconds < 0) continue; // Ignora drink futuri per sicurezza
-      
-      final elapsedHours = elapsedSeconds / 3600.0;
-
-      // Alcol smaltito finora
-      final metabolizedBac = metabolismRate * elapsedHours;
-
-      // BAC rimanente per questo singolo drink
-      final remainingBac = drinkBac - metabolizedBac;
-      
-      if (remainingBac > 0) {
-        totalBac += remainingBac;
+    for (final drink in sortedDrinks) {
+      // 1. Smaltiamo l'alcol accumulato nel tempo trascorso tra il drink precedente e questo
+      final intervalSeconds = drink.timestamp.difference(lastTime).inSeconds;
+      if (intervalSeconds > 0) {
+        final intervalHours = intervalSeconds / 3600.0;
+        currentBac = (currentBac - (metabolismRate * intervalHours)).clamp(0.0, double.infinity);
       }
+
+      // 2. Aggiungiamo il nuovo drink
+      final gramsAlcohol = drink.volume * (drink.abv / 100) * 0.8;
+      currentBac += gramsAlcohol / (user.weight * r);
+
+      lastTime = drink.timestamp;
     }
 
-    return totalBac > 0 ? totalBac : 0.0;
+    // 3. Smaltiamo l'alcol accumulato tra l'ultimo drink e "ora"
+    final now = DateTime.now();
+    final finalIntervalSeconds = now.difference(lastTime).inSeconds;
+    if (finalIntervalSeconds > 0) {
+      final finalIntervalHours = finalIntervalSeconds / 3600.0;
+      currentBac = (currentBac - (metabolismRate * finalIntervalHours)).clamp(0.0, double.infinity);
+    }
+
+    return currentBac;
   }
 
   // Calcola il tempo per tornare a 0.0 BAC
@@ -64,25 +65,36 @@ class BacCalculator {
   // Aggiungi questo metodo statico
   static double calculateBACAtTime(List<DrinkLog> drinks, UserProfile user, DateTime timePoint) {
     if (drinks.isEmpty) return 0.0;
-    double totalBac = 0.0;
+
+    // Filtriamo e ordiniamo i drink bevuti PRIMA del punto temporale richiesto
+    final relevantDrinks = drinks.where((d) => !d.timestamp.isAfter(timePoint)).toList();
+    if (relevantDrinks.isEmpty) return 0.0;
+    
+    relevantDrinks.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+
+    double currentBac = 0.0;
+    DateTime lastTime = relevantDrinks.first.timestamp;
     final r = user.gender == 'M' ? 0.68 : 0.55;
 
-    for (final drink in drinks) {
-      // Calcoliamo solo i drink bevuti PRIMA del punto temporale richiesto
-      if (drink.timestamp.isAfter(timePoint)) continue;
+    for (final drink in relevantDrinks) {
+      final intervalSeconds = drink.timestamp.difference(lastTime).inSeconds;
+      if (intervalSeconds > 0) {
+        final intervalHours = intervalSeconds / 3600.0;
+        currentBac = (currentBac - (metabolismRate * intervalHours)).clamp(0.0, double.infinity);
+      }
 
       final gramsAlcohol = drink.volume * (drink.abv / 100) * 0.8;
-      final drinkBac = gramsAlcohol / (user.weight * r);
-      
-      final elapsedSeconds = timePoint.difference(drink.timestamp).inSeconds;
-      final elapsedHours = elapsedSeconds / 3600.0;
-      final metabolizedBac = metabolismRate * elapsedHours;
+      currentBac += gramsAlcohol / (user.weight * r);
 
-      final remainingBac = drinkBac - metabolizedBac;
-      if (remainingBac > 0) {
-        totalBac += remainingBac;
-      }
+      lastTime = drink.timestamp;
     }
-    return totalBac > 0 ? totalBac : 0.0;
+
+    final finalIntervalSeconds = timePoint.difference(lastTime).inSeconds;
+    if (finalIntervalSeconds > 0) {
+      final finalIntervalHours = finalIntervalSeconds / 3600.0;
+      currentBac = (currentBac - (metabolismRate * finalIntervalHours)).clamp(0.0, double.infinity);
+    }
+
+    return currentBac;
   }
 }

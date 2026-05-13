@@ -215,7 +215,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(loc.appTitle),
+        title: const Text('Enjoy the night'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined), 
@@ -224,218 +224,227 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 32),
-            
-            // --- CERCHIO CON ANIMAZIONE NATIVA FLUIDA ---
-            TweenAnimationBuilder<double>(
-              key: ValueKey(drinksKey), 
-              tween: Tween<double>(begin: 0.0, end: displayPercent),
-              duration: const Duration(milliseconds: 1200),
-              curve: Curves.easeOutCubic,
-              builder: (context, animatedValue, child) {
-                return CircularPercentIndicator(
-                  radius: 140.0,
-                  lineWidth: 18.0,
-                  animation: false, 
-                  percent: animatedValue, 
-                  circularStrokeCap: CircularStrokeCap.round,
-                  progressColor: circleColor,
-                  backgroundColor: Colors.grey.withOpacity(0.2),
-                  center: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(loc.currentBac, style: const TextStyle(fontSize: 16, color: Colors.grey)),
-                      Text(
-                        "${currentBac.toStringAsFixed(2)} g/l",
-                        style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
-                      ),
-                      const SizedBox(height: 8),
-                      if (currentBac > 0) ...[
-                        const Icon(Icons.timer_outlined, size: 20, color: Colors.grey),
-                        Text(
-                          "${timerDuration.inHours}h ${timerDuration.inMinutes.remainder(60)}m ${timerDuration.inSeconds.remainder(60)}s",
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                        ),
-                        Text("$targetLabel $targetTimeText", style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
-                      ] else
-                        Text(loc.youAreSober, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green)),
-                    ],
-                  ),
-                );
-              },
-            ),
-            
-            const SizedBox(height: 24),
-            
-            // --- WARNING CLICKABILE PER INFO BAC ---
-            if (isOverLimit) ...[
-              GestureDetector(
-                onTap: () => _showBacInfoDialog(context),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 20),
-                      const SizedBox(width: 8),
-                      Text(loc.overLimitWarning, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.info_outline, color: Colors.red, size: 16),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-
-// --- INDICATORE ACQUA CONSIGLIATA ---
-            if (totalAlcoholGrams > 0) ...[
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isWaterDrank = !_isWaterDrank;
-                  });
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    // Cambia colore in verde se l'acqua è stata bevuta
-                    color: _isWaterDrank ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1), 
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: _isWaterDrank ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3)
-                    )
-                  ),
-                  child: Row(
-                    children: [
-                      // Cambia l'icona se spuntato
-                      Icon(
-                        _isWaterDrank ? Icons.check_circle_rounded : Icons.water_drop_rounded, 
-                        color: _isWaterDrank ? Colors.green[400] : Colors.blue[400], 
-                        size: 32
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  const SizedBox(height: 32),
+                  
+                  // --- CERCHIO CON ANIMAZIONE NATIVA FLUIDA ---
+                  TweenAnimationBuilder<double>(
+                    key: ValueKey(drinksKey), 
+                    tween: Tween<double>(begin: 0.0, end: displayPercent),
+                    duration: const Duration(milliseconds: 1200),
+                    curve: Curves.easeOutCubic,
+                    builder: (context, animatedValue, child) {
+                      return CircularPercentIndicator(
+                        radius: 140.0,
+                        lineWidth: 18.0,
+                        animation: false, 
+                        percent: animatedValue, 
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: circleColor,
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        center: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Text(loc.currentBac, style: const TextStyle(fontSize: 16, color: Colors.grey)),
                             Text(
-                              loc.hydrationTitle, 
-                              style: TextStyle(
-                                color: _isWaterDrank ? Colors.green[800] : Colors.blue[800], 
-                                fontWeight: FontWeight.bold,
-                                decoration: _isWaterDrank ? TextDecoration.lineThrough : null, // Sbarra il testo se fatto
-                              )
+                              "${currentBac.toStringAsFixed(2)} g/l",
+                              style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              loc.hydrationAdvice(recommendedWaterMl, recommendedWaterGlasses), 
-                              style: TextStyle(
-                                color: _isWaterDrank ? Colors.green[700] : Colors.blue[700], 
-                                fontSize: 13, 
-                                height: 1.2,
-                                decoration: _isWaterDrank ? TextDecoration.lineThrough : null,
-                              )
+                            const SizedBox(height: 8),
+                            if (currentBac > 0) ...[
+                              const Icon(Icons.timer_outlined, size: 20, color: Colors.grey),
+                              Text(
+                                "${timerDuration.inHours}h ${timerDuration.inMinutes.remainder(60)}m ${timerDuration.inSeconds.remainder(60)}s",
+                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                              ),
+                              Text("$targetLabel $targetTimeText", style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
+                            ] else
+                              Text(loc.youAreSober, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green)),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // --- WARNING CLICKABILE PER INFO BAC ---
+                  if (isOverLimit) ...[
+                    GestureDetector(
+                      onTap: () => _showBacInfoDialog(context),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 20),
+                            const SizedBox(width: 8),
+                            Text(loc.overLimitWarning, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                            const SizedBox(width: 4),
+                            const Icon(Icons.info_outline, color: Colors.red, size: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // --- INDICATORE ACQUA CONSIGLIATA ---
+                  if (totalAlcoholGrams > 0) ...[
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isWaterDrank = !_isWaterDrank;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: _isWaterDrank ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1), 
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: _isWaterDrank ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3)
+                          )
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _isWaterDrank ? Icons.check_circle_rounded : Icons.water_drop_rounded, 
+                              color: _isWaterDrank ? Colors.green[400] : Colors.blue[400], 
+                              size: 32
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    loc.hydrationTitle, 
+                                    style: TextStyle(
+                                      color: _isWaterDrank ? Colors.green[800] : Colors.blue[800], 
+                                      fontWeight: FontWeight.bold,
+                                      decoration: _isWaterDrank ? TextDecoration.lineThrough : null,
+                                    )
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    loc.hydrationAdvice(recommendedWaterMl, recommendedWaterGlasses), 
+                                    style: TextStyle(
+                                      color: _isWaterDrank ? Colors.green[700] : Colors.blue[700], 
+                                      fontSize: 13, 
+                                      height: 1.2,
+                                      decoration: _isWaterDrank ? TextDecoration.lineThrough : null,
+                                    )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Checkbox(
+                              value: _isWaterDrank,
+                              activeColor: Colors.green,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _isWaterDrank = value ?? false;
+                                });
+                              },
                             ),
                           ],
                         ),
                       ),
-                      // <-- LA TUA CHECKBOX
-                      Checkbox(
-                        value: _isWaterDrank,
-                        activeColor: Colors.green,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isWaterDrank = value ?? false;
-                          });
-                        },
-                      ),
-                    ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  
+                  // --- DISCLAIMER PICCOLO GENERALE ---
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.withOpacity(0.2))),
+                    child: Row(
+                      children: [
+                        Icon(Icons.info_outline, size: 18, color: Colors.grey[500]),
+                        const SizedBox(width: 10),
+                        Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey))),
+                      ],
+                    ),
+                  ), 
+                  
+                  const SizedBox(height: 24),
+                  
+                  // --- HEADER LISTA DRINK ---
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("${loc.todayDrinks} (24h)", style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 8),
+                  
+                  if (recentDrinks.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Center(child: Text(loc.noDrinks, style: TextStyle(color: Colors.grey[500], fontSize: 16))),
+                    ),
+                ],
+              ),
+            ),
+            
+            // --- LISTA DRINK RECENTI ---
+            if (recentDrinks.isNotEmpty)
+              SliverPadding(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final drink = recentDrinks[recentDrinks.length - 1 - index];
+                      return Dismissible(
+                        key: Key(drink.id),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) => ref.read(drinksProvider.notifier).removeDrink(drink.id),
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          decoration: BoxDecoration(color: Colors.red[400], borderRadius: BorderRadius.circular(16)),
+                          child: const Icon(Icons.delete_sweep, color: Colors.white, size: 28),
+                        ),
+                        child: Card(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: ListTile(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
+                                builder: (context) => Padding(
+                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  child: AddDrinkBottomSheet(drinkToEdit: drink), 
+                                ),
+                              );
+                            },
+                            leading: CircleAvatar(
+                              backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                              child: Icon(_getDrinkIcon(drink.name), color: theme.colorScheme.primary),
+                            ),
+                            title: Text(_getTranslatedDrinkName(drink.name, loc), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            subtitle: Text("${drink.volume.toInt()} ml • ${drink.abv.toStringAsFixed(2)}% ABV"),
+                            trailing: Text(DateFormat('HH:mm').format(drink.timestamp), style: const TextStyle(color: Colors.grey)),
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: recentDrinks.length,
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-            ],
-            
-            // --- DISCLAIMER PICCOLO GENERALE ---
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.withOpacity(0.2))),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, size: 18, color: Colors.grey[500]),
-                  const SizedBox(width: 10),
-                  Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey))),
-                ],
-              ),
-            ), 
-            
-            const SizedBox(height: 24),
-            
-            // --- HEADER LISTA DRINK ---
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("${loc.todayDrinks} (24h)", style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-              ),
-            ),
-            
-            const SizedBox(height: 8),
-            
-            // --- LISTA DRINK RECENTI ---
-            Expanded(
-              child: recentDrinks.isEmpty
-                  ? Center(child: Text(loc.noDrinks, style: TextStyle(color: Colors.grey[500], fontSize: 16)))
-                  : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 16),
-                      itemCount: recentDrinks.length,
-                      itemBuilder: (context, index) {
-                        final drink = recentDrinks[recentDrinks.length - 1 - index];
-                        return Dismissible(
-                          key: Key(drink.id),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (_) => ref.read(drinksProvider.notifier).removeDrink(drink.id),
-                          background: Container(
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.only(right: 20),
-                            decoration: BoxDecoration(color: Colors.red[400], borderRadius: BorderRadius.circular(16)),
-                            child: const Icon(Icons.delete_sweep, color: Colors.white, size: 28),
-                          ),
-                          child: Card(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            child: ListTile(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
-                                  builder: (context) => Padding(
-                                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                    child: AddDrinkBottomSheet(drinkToEdit: drink), 
-                                  ),
-                                );
-                              },
-                              leading: CircleAvatar(
-                                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-                                child: Icon(_getDrinkIcon(drink.name), color: theme.colorScheme.primary),
-                              ),
-                              title: Text(_getTranslatedDrinkName(drink.name, loc), style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text("${drink.volume.toInt()} ml • ${drink.abv.toStringAsFixed(2)}% ABV"),
-                              trailing: Text(DateFormat('HH:mm').format(drink.timestamp), style: const TextStyle(color: Colors.grey)),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-            ),
           ],
         ),
       ),
