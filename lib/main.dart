@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; // <-- IMPORT OBBLIGATORIO PER LE LINGUE
 
+import 'package:intl/date_symbol_data_local.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/main_wrapper.dart';     
 import 'screens/onboarding_screen.dart'; 
 import 'providers/app_providers.dart';   
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
   
   runApp(
     const ProviderScope(

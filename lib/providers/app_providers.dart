@@ -74,9 +74,9 @@ class UserNotifier extends StateNotifier<UserProfile> {
     }
   }
 
-  // Override del setter per salvare ogni volta che il profilo cambia
-  set state(UserProfile newUser) {
-    super.state = newUser;
+  // Metodo per aggiornare l'utente e salvarlo
+  void updateUser(UserProfile newUser) {
+    state = newUser;
     _saveUser(newUser);
   }
 

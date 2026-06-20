@@ -216,7 +216,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       ),
                       label: Text(
                         hoursSpan == null 
-                            ? "${DateFormat('dd/MM').format(selectedDateRange!.start)} - ${DateFormat('dd/MM').format(selectedDateRange!.end)}"
+                            ? "${DateFormat('dd/MM', Localizations.localeOf(context).languageCode).format(selectedDateRange!.start)} - ${DateFormat('dd/MM', Localizations.localeOf(context).languageCode).format(selectedDateRange!.end)}"
                             : loc.customDates, 
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -268,7 +268,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                              _formatBottomTitle(time, totalAxisMinutes), 
+                              _formatBottomTitle(time, totalAxisMinutes, Localizations.localeOf(context).languageCode), 
                               style: const TextStyle(fontSize: 10, color: Colors.grey),
                               textAlign: TextAlign.center,
                             ),
@@ -323,7 +323,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                               alignment: Alignment.bottomLeft, 
                               padding: const EdgeInsets.only(right: 6, bottom: 35), // <-- Padding aumentato a 35 per alzare il testo
                               style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
-                              labelResolver: (_) => "0.0 g/l\n${DateFormat('HH:mm').format(exactSoberTime)}", 
+                              labelResolver: (_) => "0.0 g/l\n${DateFormat('HH:mm', Localizations.localeOf(context).languageCode).format(exactSoberTime)}", 
                             ),
                             )
                           ];
@@ -383,7 +383,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
-                            text: DateFormat('HH:mm').format(_xToDate(s.x)), 
+                            text: DateFormat('HH:mm', Localizations.localeOf(context).languageCode).format(_xToDate(s.x)), 
                             style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.normal)
                           )
                         ]
@@ -431,7 +431,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             _getTranslatedDrinkName(drink.name, loc), 
                             style: const TextStyle(fontWeight: FontWeight.bold)
                           ),
-                          subtitle: Text(DateFormat('dd MMM, HH:mm').format(drink.timestamp)),
+                          subtitle: Text(DateFormat('dd MMM, HH:mm', Localizations.localeOf(context).languageCode).format(drink.timestamp)),
                           trailing: Text(
                             "${drink.abv.toStringAsFixed(2)}%",
                             style: const TextStyle(fontWeight: FontWeight.bold),
@@ -469,11 +469,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     return 60;                                  
   }
 
-  String _formatBottomTitle(DateTime time, double totalMinutes) {
-    if (totalMinutes > 43200) return DateFormat('dd MMM').format(time); 
-    if (totalMinutes > 2880) return DateFormat('dd MMM').format(time);  
-    if (totalMinutes >= 1440) return DateFormat('HH:mm\ndd/MM').format(time); 
-    return DateFormat('HH:mm').format(time); 
+  String _formatBottomTitle(DateTime time, double totalMinutes, String locale) {
+    if (totalMinutes > 43200) return DateFormat('dd MMM', locale).format(time); 
+    if (totalMinutes > 2880) return DateFormat('dd MMM', locale).format(time);  
+    if (totalMinutes >= 1440) return DateFormat('HH:mm\ndd/MM', locale).format(time); 
+    return DateFormat('HH:mm', locale).format(time); 
   }
 
   double _calculateMaxY(drinks, user, DateTime start, DateTime end) {

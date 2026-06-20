@@ -154,9 +154,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                       onPressed: _acceptedDisclaimer ? () async {
                         await NotificationService.requestPermissions();
-                        ref.read(userProvider.notifier).state = UserProfile(
+                        ref.read(userProvider.notifier).updateUser(UserProfile(
                           weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
-                        );
+                        ));
                       } : null,
                       child: Text(loc.startBtn, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ),

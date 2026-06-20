@@ -160,9 +160,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     onPressed: () {
                       // Salviamo i nuovi dati e torniamo indietro
-                      ref.read(userProvider.notifier).state = UserProfile(
+                      ref.read(userProvider.notifier).updateUser(UserProfile(
                         weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
-                      );
+                      ));
                       Navigator.pop(context);
                     },
                     child: Text(loc.saveBtn, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), // TRADOTTO
