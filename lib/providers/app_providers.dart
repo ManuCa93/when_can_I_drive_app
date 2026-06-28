@@ -54,7 +54,7 @@ final userProvider = StateNotifierProvider<UserNotifier, UserProfile>((ref) {
 });
 
 class UserNotifier extends StateNotifier<UserProfile> {
-  UserNotifier() : super(UserProfile(weight: 70, height: 170, age: 25, gender: 'M', isNewDriver: false, isOnboarded: false)) {
+  UserNotifier() : super(UserProfile(weight: 70, height: 170, age: 25, gender: 'M', isNewDriver: false, isOnboarded: false, isLoading: true)) {
     _loadUser();
   }
 
@@ -63,14 +63,9 @@ class UserNotifier extends StateNotifier<UserProfile> {
     final String? userData = prefs.getString('user_profile');
     if (userData != null) {
       final Map<String, dynamic> map = jsonDecode(userData);
-      state = UserProfile(
-        weight: map['weight'],
-        height: map['height'],
-        age: map['age'],
-        gender: map['gender'],
-        isNewDriver: map['isNewDriver'] ?? false,
-        isOnboarded: map['isOnboarded'],
-      );
+      state = UserProfile.fromMap(map).copyWith(isLoading: false);
+    } else {
+      state = state.copyWith(isLoading: false);
     }
   }
 

@@ -8,8 +8,16 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_stat_logo_notifica');
 
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+
     const InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
 
     await _notificationsPlugin.initialize(
@@ -22,8 +30,16 @@ class NotificationService {
     final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
         _notificationsPlugin.resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
-
     await androidImplementation?.requestNotificationsPermission();
+
+    final IOSFlutterLocalNotificationsPlugin? iosImplementation =
+        _notificationsPlugin.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>();
+    await iosImplementation?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   static Future<void> updateBacNotification({
@@ -38,7 +54,7 @@ class NotificationService {
       return;
     }
 
-    String icon = isOverLimit ? "🔴" : "🟢";
+    String title = isOverLimit ? "Over Limit" : "Under Limit";
 
     AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       'bac_status_channel',
@@ -56,7 +72,7 @@ class NotificationService {
 
     await _notificationsPlugin.show(
       id: 888,
-      title: "$icon BAC: ${currentBac.toStringAsFixed(2)} g/l",
+      title: "$title - BAC: ${currentBac.toStringAsFixed(2)} g/l",
       body: "$statusLabel $targetTime",
       notificationDetails: platformDetails,
     );

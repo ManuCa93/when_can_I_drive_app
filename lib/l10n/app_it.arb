@@ -9,8 +9,8 @@
   "todayDrinks": "Drink di Oggi",
   "noDrinks": "Nessun drink oggi. Ottimo!",
   "disclaimer": "ATTENZIONE: Stima matematica. Non sostituire a etilometri reali. Non guidare.",
-  "statusUnder": "🟢 Sotto il limite",
-  "statusOver": "🔴 Oltre il limite",
+  "statusUnder": "Sotto il limite",
+  "statusOver": "Oltre il limite",
   "estimatedTime": "Tempo stimato:",
   "historyTitle": "Andamento BAC",
   "drinkHistory": "Cronologia Drink",
@@ -86,5 +86,7 @@
   "manualEdit": "Modifica manuale",
   "favoritesTitle": "Preferiti",
   "savedToFavorites": "Salvato nei preferiti",
-  "removedFromFavorites": "Rimosso dai preferiti"
+  "removedFromFavorites": "Rimosso dai preferiti",
+  "editDrinkTitle": "Modifica Drink",
+  "limitLabel": "Limite"
 }

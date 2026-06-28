@@ -5,6 +5,7 @@ class UserProfile {
   final String gender;
   final bool isNewDriver;
   final bool isOnboarded;
+  final bool isLoading;
 
   double get legalLimit => isNewDriver ? 0.0 : 0.5;
 
@@ -15,7 +16,52 @@ class UserProfile {
     required this.gender,
     this.isNewDriver = false,
     this.isOnboarded = false,
+    this.isLoading = false,
   });
+
+  UserProfile copyWith({
+    double? weight,
+    double? height,
+    int? age,
+    String? gender,
+    bool? isNewDriver,
+    bool? isOnboarded,
+    bool? isLoading,
+  }) {
+    return UserProfile(
+      weight: weight ?? this.weight,
+      height: height ?? this.height,
+      age: age ?? this.age,
+      gender: gender ?? this.gender,
+      isNewDriver: isNewDriver ?? this.isNewDriver,
+      isOnboarded: isOnboarded ?? this.isOnboarded,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+
+  factory UserProfile.fromMap(Map<String, dynamic> map) {
+    try {
+      return UserProfile(
+        weight: (map['weight'] ?? 70.0).toDouble(),
+        height: (map['height'] ?? 170.0).toDouble(),
+        age: (map['age'] ?? 25).toInt(),
+        gender: map['gender'] ?? 'M',
+        isNewDriver: map['isNewDriver'] ?? false,
+        isOnboarded: map['isOnboarded'] ?? false,
+        isLoading: false,
+      );
+    } catch (e) {
+      return UserProfile(
+        weight: 70.0,
+        height: 170.0,
+        age: 25,
+        gender: 'M',
+        isNewDriver: false,
+        isOnboarded: false,
+        isLoading: false,
+      );
+    }
+  }
 
   // Per salvare i dati sul telefono
   Map<String, dynamic> toMap() => {

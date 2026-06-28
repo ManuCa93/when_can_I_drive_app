@@ -1,4 +1,4 @@
-package com.example.sobertrack_app
+package com.manuca.sobertrack
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -6,20 +6,29 @@ import '../providers/app_providers.dart';
 import '../utils/bac_calculator.dart';
 import '../l10n/app_localizations.dart';
 
-// --- CUSTOM PAINTER PER DISEGNARE LE EMOJI SUL GRAFICO ---
+// --- CUSTOM PAINTER PER DISEGNARE LE ICONE SUL GRAFICO ---
 class DrinkDotPainter extends FlDotPainter {
-  final String emoji;
-  DrinkDotPainter(this.emoji);
+  final IconData iconData;
+  final Color color;
+  
+  DrinkDotPainter(this.iconData, this.color);
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    final textSpan = TextSpan(text: emoji, style: const TextStyle(fontSize: 16));
+    final textSpan = TextSpan(
+      text: String.fromCharCode(iconData.codePoint),
+      style: TextStyle(
+        fontSize: 16,
+        fontFamily: iconData.fontFamily,
+        package: iconData.fontPackage,
+        color: color, 
+      ),
+    );
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
     );
     textPainter.layout();
-    // Centriamo l'emoji orizzontalmente e la alziamo leggermente sopra la linea
     textPainter.paint(
       canvas,
       Offset(offsetInCanvas.dx - (textPainter.width / 2), offsetInCanvas.dy - textPainter.height - 4),
@@ -39,7 +48,7 @@ class DrinkDotPainter extends FlDotPainter {
   }
 
   @override
-  List<Object?> get props => [emoji];
+  List<Object?> get props => [iconData];
 }
 
 class HistoryScreen extends ConsumerStatefulWidget {
@@ -80,13 +89,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     return Icons.local_drink_rounded;
   }
 
-  String _getDrinkEmoji(String name) {
+  IconData _getDrinkEmoji(String name) {
     final n = name.toLowerCase();
-    if (n.contains('birra') || n.contains('beer')) return "🍺";
-    if (n.contains('vino') || n.contains('wine') || n.contains('prosecco')) return "🥂";
-    if (n.contains('shot') || n.contains('amaro') || n.contains('bitter')) return "🥃";
-    if (n.contains('cocktail') || n.contains('spritz') || n.contains('gin') || n.contains('negroni')) return "🍸";
-    return "💧"; // Default
+    if (n.contains('birra') || n.contains('beer')) return Icons.sports_bar_rounded;
+    if (n.contains('vino') || n.contains('wine') || n.contains('prosecco')) return Icons.wine_bar_rounded;
+    if (n.contains('shot') || n.contains('amaro') || n.contains('bitter')) return Icons.liquor_rounded;
+    if (n.contains('cocktail') || n.contains('spritz') || n.contains('gin') || n.contains('negroni')) return Icons.local_bar_rounded;
+    return Icons.local_drink_rounded; // Default
   }
 
   // --- LOGICA TEMPORALE CORRETTA E ASSOLUTA ---
@@ -302,7 +311,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         label: HorizontalLineLabel(
                           show: !user.isNewDriver,
                           alignment: Alignment.topRight,
-                          labelResolver: (_) => "Limit",
+                          labelResolver: (_) => loc.limitLabel,
                           style: const TextStyle(fontSize: 9, color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -370,7 +379,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           show: true,
                           getDotPainter: (spot, percent, barData, index) {
                             final drink = displayedDrinks[index];
-                            return DrinkDotPainter(_getDrinkEmoji(drink.name));
+                            final iconColor = theme.brightness == Brightness.dark ? Colors.grey[300]! : Colors.grey[700]!;
+                            return DrinkDotPainter(_getDrinkEmoji(drink.name), iconColor);
                           },
                         ),
                       ),

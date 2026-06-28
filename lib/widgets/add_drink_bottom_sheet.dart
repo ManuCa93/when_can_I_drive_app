@@ -221,7 +221,7 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
                   children: [
                     Icon(_getCategoryIcon(_selectedCategory), color: theme.colorScheme.primary, size: 28),
                     const SizedBox(width: 12),
-                    Text(isEditing ? "Edit" : loc.addDrinkTitle, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+                    Text(isEditing ? loc.editDrinkTitle : loc.addDrinkTitle, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                   ],
                 ),
                 IconButton(

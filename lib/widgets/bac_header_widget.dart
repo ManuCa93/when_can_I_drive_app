@@ -30,42 +30,56 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
     super.initState();
     NotificationService.init();
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 15), (_) {
       if (mounted) {
         setState(() {});
-        
-        final loc = AppLocalizations.of(context);
-        if (loc == null) return;
-
-        final user = ref.read(userProvider);
-        final drinks = ref.read(drinksProvider);
-        final currentBac = BacCalculator.calculateCurrentBAC(drinks, user);
-
-        if (currentBac > 0) {
-          final isOverLimit = currentBac > user.legalLimit;
-          final timerDuration = isOverLimit 
-              ? BacCalculator.timeUntilLegalLimit(currentBac, user.legalLimit)
-              : BacCalculator.timeUntilSober(currentBac);
-          
-          final targetDateTime = DateTime.now().add(timerDuration);
-          final targetTimeText = DateFormat('HH:mm').format(targetDateTime);
-          final currentBacString = currentBac.toStringAsFixed(2);
-
-          if (_lastBacString != currentBacString || _lastTargetTime != targetTimeText) {
-            _lastBacString = currentBacString;
-            _lastTargetTime = targetTimeText;
-
-            NotificationService.updateBacNotification(
-              currentBac: currentBac,
-              targetTime: targetTimeText,
-              isOverLimit: isOverLimit,
-              statusLabel: isOverLimit ? loc.underLimitAt : loc.soberAt, 
-              channelName: loc.appTitle, 
-            );
-          }
-        }
+        _updateNotification();
       }
     });
+  }
+
+  void _updateNotification() {
+    final loc = AppLocalizations.of(context);
+    if (loc == null) return;
+
+    final user = ref.read(userProvider);
+    final drinks = ref.read(drinksProvider);
+    final currentBac = BacCalculator.calculateCurrentBAC(drinks, user);
+
+    if (currentBac > 0) {
+      final isOverLimit = currentBac > user.legalLimit;
+      final timerDuration = isOverLimit 
+          ? BacCalculator.timeUntilLegalLimit(currentBac, user.legalLimit)
+          : BacCalculator.timeUntilSober(currentBac);
+      
+      final targetDateTime = DateTime.now().add(timerDuration);
+      final targetTimeText = DateFormat('HH:mm').format(targetDateTime);
+      final currentBacString = currentBac.toStringAsFixed(2);
+
+      if (_lastBacString != currentBacString || _lastTargetTime != targetTimeText) {
+        _lastBacString = currentBacString;
+        _lastTargetTime = targetTimeText;
+
+        NotificationService.updateBacNotification(
+          currentBac: currentBac,
+          targetTime: targetTimeText,
+          isOverLimit: isOverLimit,
+          statusLabel: isOverLimit ? loc.underLimitAt : loc.soberAt, 
+          channelName: loc.appTitle, 
+        );
+      }
+    } else {
+      if (_lastBacString != "0.00") {
+        _lastBacString = "0.00";
+        NotificationService.updateBacNotification(
+          currentBac: 0,
+          targetTime: "",
+          isOverLimit: false,
+          statusLabel: "", 
+          channelName: loc.appTitle, 
+        );
+      }
+    }
   }
 
   @override
@@ -76,6 +90,9 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(drinksProvider, (_, __) => _updateNotification());
+    ref.listen(userProvider, (_, __) => _updateNotification());
+
     final loc = AppLocalizations.of(context)!;
     final user = ref.watch(userProvider);
     final drinks = ref.watch(drinksProvider);
@@ -149,7 +166,7 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
                   if (currentBac > 0) ...[
                     const Icon(Icons.timer_outlined, size: 20, color: Colors.grey),
                     Text(
-                      "${timerDuration.inHours}h ${timerDuration.inMinutes.remainder(60)}m ${timerDuration.inSeconds.remainder(60)}s",
+                      "${timerDuration.inHours}h ${timerDuration.inMinutes.remainder(60)}m",
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                     ),
                     Text("$targetLabel $targetTimeText", style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),

@@ -37,10 +37,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'ATTENZIONE: Stima matematica. Non sostituire a etilometri reali. Non guidare.';
 
   @override
-  String get statusUnder => '🟢 Sotto il limite';
+  String get statusUnder => 'Sotto il limite';
 
   @override
-  String get statusOver => '🔴 Oltre il limite';
+  String get statusOver => 'Oltre il limite';
 
   @override
   String get estimatedTime => 'Tempo stimato:';
@@ -251,4 +251,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get removedFromFavorites => 'Rimosso dai preferiti';
+
+  @override
+  String get editDrinkTitle => 'Modifica Drink';
+
+  @override
+  String get limitLabel => 'Limite';
 }

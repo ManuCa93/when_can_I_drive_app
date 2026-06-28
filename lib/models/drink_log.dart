@@ -32,14 +32,29 @@ class DrinkLog {
   }
 
   factory DrinkLog.fromMap(Map<String, dynamic> map) {
-    return DrinkLog(
-      id: map['id'],
-      name: map['name'],
-      volume: map['volume'],
-      abv: map['abv'],
-      timestamp: DateTime.parse(map['timestamp']),
-      stomachState: StomachState.values[map['stomachState']],
-      hoursSinceMeal: map['hoursSinceMeal'],
-    );
+    try {
+      return DrinkLog(
+        id: map['id'] ?? '',
+        name: map['name'] ?? 'Sconosciuto',
+        volume: (map['volume'] ?? 0.0).toDouble(),
+        abv: (map['abv'] ?? 0.0).toDouble(),
+        timestamp: map['timestamp'] != null ? DateTime.parse(map['timestamp']) : DateTime.now(),
+        stomachState: map['stomachState'] != null && map['stomachState'] >= 0 && map['stomachState'] < StomachState.values.length
+            ? StomachState.values[map['stomachState']]
+            : StomachState.normal,
+        hoursSinceMeal: (map['hoursSinceMeal'] ?? 0.0).toDouble(),
+      );
+    } catch (e) {
+      // In caso di errore parsing (es. data invalida), usa default sicuri
+      return DrinkLog(
+        id: map['id'] ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        name: 'Sconosciuto',
+        volume: 0.0,
+        abv: 0.0,
+        timestamp: DateTime.now(),
+        stomachState: StomachState.normal,
+        hoursSinceMeal: 0.0,
+      );
+    }
   }
 }

@@ -110,7 +110,9 @@ class SoberTrackApp extends ConsumerWidget {
         ),
       ),
       
-      home: user.isOnboarded ? const MainWrapper() : const OnboardingScreen(), 
+      home: user.isLoading 
+          ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+          : (user.isOnboarded ? const MainWrapper() : const OnboardingScreen()), 
     );
   }
 }

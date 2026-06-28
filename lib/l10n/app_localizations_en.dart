@@ -37,10 +37,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'WARNING: Mathematical estimate. Do not replace real breathalyzers. Never drink and drive.';
 
   @override
-  String get statusUnder => '🟢 Under limit';
+  String get statusUnder => 'Under limit';
 
   @override
-  String get statusOver => '🔴 Over limit';
+  String get statusOver => 'Over limit';
 
   @override
   String get estimatedTime => 'Estimated time:';
@@ -251,4 +251,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removedFromFavorites => 'Removed from favorites';
+
+  @override
+  String get editDrinkTitle => 'Edit Drink';
+
+  @override
+  String get limitLabel => 'Limit';
 }

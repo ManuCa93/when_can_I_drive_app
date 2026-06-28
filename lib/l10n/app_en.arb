@@ -9,8 +9,8 @@
   "todayDrinks": "Today's Drinks",
   "noDrinks": "No drinks today. Great!",
   "disclaimer": "WARNING: Mathematical estimate. Do not replace real breathalyzers. Never drink and drive.",
-  "statusUnder": "🟢 Under limit",
-  "statusOver": "🔴 Over limit",
+  "statusUnder": "Under limit",
+  "statusOver": "Over limit",
   "estimatedTime": "Estimated time:",
   "historyTitle": "BAC Trend",
   "drinkHistory": "Drink History",
@@ -86,5 +86,7 @@
   "manualEdit": "Manual edit",
   "favoritesTitle": "Favorites",
   "savedToFavorites": "Saved to favorites",
-  "removedFromFavorites": "Removed from favorites"
+  "removedFromFavorites": "Removed from favorites",
+  "editDrinkTitle": "Edit Drink",
+  "limitLabel": "Limit"
 }
