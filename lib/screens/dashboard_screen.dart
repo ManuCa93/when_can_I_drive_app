@@ -71,6 +71,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.redAccent),
               ),
               const Divider(height: 24),
+              Text(loc.calculationExplanationTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 12),
+              Text(loc.calculationExplanationBody, style: const TextStyle(fontSize: 13)),
+              const Divider(height: 24),
               Text(loc.estimatedEffectsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 12),
               _buildBacRangeRow("0.01 - 0.05", loc.bacEffect1),
@@ -249,16 +253,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ],
                   
                   // --- DISCLAIMER PICCOLO GENERALE ---
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.withOpacity(0.2))),
-                    child: Row(
-                      children: [
-                        Icon(Icons.info_outline, size: 18, color: Colors.grey[500]),
-                        const SizedBox(width: 10),
-                        Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey))),
-                      ],
+                  GestureDetector(
+                    onTap: () => _showBacInfoDialog(context),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(color: Colors.grey.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.withOpacity(0.2))),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline, size: 18, color: Colors.grey[500]),
+                          const SizedBox(width: 10),
+                          Expanded(child: Text(loc.disclaimer, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey))),
+                        ],
+                      ),
                     ),
                   ), 
                   
