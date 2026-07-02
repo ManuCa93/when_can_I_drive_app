@@ -9,7 +9,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get appTitle => 'SoberTrack';
+  String get appTitle => 'Enjoy the Night';
 
   @override
   String get currentBac => 'Aktuelle BAK';
@@ -21,7 +21,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get underLimitAt => 'Unter Limit um';
 
   @override
-  String get youAreSober => 'Du bist nüchtern!';
+  String get youAreSober => 'Du darfst fahren!';
 
   @override
   String get overLimitWarning => 'Du bist über dem Limit!';
@@ -97,7 +97,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get saveBtn => 'Speichern';
 
   @override
-  String get welcomeTitle => 'Willkommen bei SoberTrack';
+  String get welcomeTitle => 'Willkommen bei Enjoy the Night';
 
   @override
   String get welcomeSubtitle =>

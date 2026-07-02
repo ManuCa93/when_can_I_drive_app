@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'SoberTrack';
+  String get appTitle => 'Enjoy the Night';
 
   @override
   String get currentBac => 'Current BAC';
@@ -21,7 +21,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get underLimitAt => 'Under limit at';
 
   @override
-  String get youAreSober => 'You are sober!';
+  String get youAreSober => 'You can drive!';
 
   @override
   String get overLimitWarning => 'You are over the driving limit!';
@@ -97,7 +97,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveBtn => 'Save';
 
   @override
-  String get welcomeTitle => 'Welcome to SoberTrack';
+  String get welcomeTitle => 'Welcome to Enjoy the Night';
 
   @override
   String get welcomeSubtitle =>

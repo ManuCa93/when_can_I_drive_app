@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'SoberTrack'**
+  /// **'Enjoy the Night'**
   String get appTitle;
 
   /// No description provided for @currentBac.
@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @youAreSober.
   ///
   /// In en, this message translates to:
-  /// **'You are sober!'**
+  /// **'You can drive!'**
   String get youAreSober;
 
   /// No description provided for @overLimitWarning.
@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to SoberTrack'**
+  /// **'Welcome to Enjoy the Night'**
   String get welcomeTitle;
 
   /// No description provided for @welcomeSubtitle.
