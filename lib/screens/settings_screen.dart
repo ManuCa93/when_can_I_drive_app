@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_profile.dart';
 import '../providers/app_providers.dart';
 import '../l10n/app_localizations.dart'; // <-- IMPORT DELLE TRADUZIONI
+import '../widgets/disclaimer_widget.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -81,6 +82,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const DisclaimerWidget(margin: EdgeInsets.zero),
+                const SizedBox(height: 24),
                 Text(loc.settingsSubtitle, style: const TextStyle(color: Colors.grey)), // TRADOTTO
                 const SizedBox(height: 32),
                 

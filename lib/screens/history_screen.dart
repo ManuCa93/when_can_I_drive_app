@@ -5,6 +5,7 @@ import 'package:intl/intl.dart' hide TextDirection; // <-- AGGIUNGI hide TextDir
 import '../providers/app_providers.dart';
 import '../utils/bac_calculator.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/disclaimer_widget.dart';
 
 // --- CUSTOM PAINTER PER DISEGNARE LE ICONE SUL GRAFICO ---
 class DrinkDotPainter extends FlDotPainter {
@@ -192,6 +193,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 20),
+            
+            const DisclaimerWidget(),
+            
             const SizedBox(height: 20),
             
             SingleChildScrollView(
@@ -452,16 +457,6 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ),
             
             const SizedBox(height: 120),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Text(
-                loc.disclaimer,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

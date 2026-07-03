@@ -577,6 +577,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Limit'**
   String get limitLabel;
+
+  /// No description provided for @calculationExplanationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How is BAC calculated?'**
+  String get calculationExplanationTitle;
+
+  /// No description provided for @calculationExplanationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This app uses the modified Widmark formula to mathematically estimate your Blood Alcohol Concentration (BAC).\n\nWHAT AFFECTS THE CALCULATION:\n• Weight and gender (they determine the water content in your body).\n• Alcohol volume and ABV.\n• Stomach state AT THE TIME of drinking (food slows down alcohol absorption).\n\nWHAT DOES NOT AFFECT IT (Myths):\n• Eating AFTER drinking: the alcohol is already in your bloodstream, food doesn\'t absorb it or help the liver process it faster.\n• Drinking coffee, taking cold showers, or drinking lots of water (water prevents dehydration but doesn\'t lower BAC).\n• Only TIME allows your liver to metabolize alcohol (approx 0.15 g/l per hour).'**
+  String get calculationExplanationBody;
 }
 
 class _AppLocalizationsDelegate
