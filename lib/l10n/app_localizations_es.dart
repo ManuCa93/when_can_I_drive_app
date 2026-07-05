@@ -263,4 +263,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get calculationExplanationBody =>
       'Esta aplicación utiliza la fórmula de Widmark modificada para estimar matemáticamente su concentración de alcohol en sangre (BAC).\n\nQUÉ AFECTA EL CÁLCULO:\n• Peso y sexo (determinan la cantidad de agua en su cuerpo).\n• Volumen y graduación alcohólica.\n• Estado del estómago EN EL MOMENTO de beber (la comida ralentiza la absorción del alcohol).\n\nQUÉ NO LO AFECTA (Mitos):\n• Comer DESPUÉS de beber: el alcohol ya está en el torrente sanguíneo, la comida no lo absorbe ni ayuda al hígado a procesarlo más rápido.\n• Tomar café, duchas frías o beber mucha agua (el agua previene la deshidratación pero no reduce el BAC).\n• Solo el TIEMPO permite que el hígado metabolice el alcohol (aprox. 0.15 g/l por hora).';
+
+  @override
+  String get timeFormatTitle => '24-hour Time';
+
+  @override
+  String get timeFormatDesc =>
+      'Switch between 12-hour (AM/PM) and 24-hour time format';
 }

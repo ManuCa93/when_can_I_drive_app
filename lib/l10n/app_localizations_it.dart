@@ -97,7 +97,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get saveBtn => 'Salva';
 
   @override
-  String get welcomeTitle => 'Benvenuto su Enjoy the Night';
+  String get welcomeTitle => 'Welcome to Enjoy the Night';
 
   @override
   String get welcomeSubtitle =>
@@ -264,4 +264,11 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get calculationExplanationBody =>
       'Questa app utilizza la formula di Widmark modificata per stimare matematicamente la concentrazione di alcol nel sangue (BAC).\n\nCOSA INCIDE SUL CALCOLO:\n• Peso e sesso (determinano la quantità di acqua nel corpo).\n• Gradazione e volume del drink.\n• Stato dello stomaco AL MOMENTO dell\'assunzione (il cibo rallenta l\'assorbimento dell\'alcol).\n\nCOSA NON INCIDE (Falsi miti):\n• Mangiare DOPO aver bevuto: l\'alcol è già in circolo, il cibo non lo assorbe né aiuta il fegato a smaltirlo.\n• Bere caffè, fare docce fredde o bere tanta acqua (l\'acqua previene la disidratazione ma non abbassa il BAC).\n• Solo il TEMPO permette al fegato di metabolizzare l\'alcol (circa 0.15 g/l all\'ora).';
+
+  @override
+  String get timeFormatTitle => 'Formato 24 ore';
+
+  @override
+  String get timeFormatDesc =>
+      'Scegli tra il formato a 12 ore (AM/PM) e quello a 24 ore';
 }

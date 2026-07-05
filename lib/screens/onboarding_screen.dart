@@ -4,6 +4,7 @@ import '../models/user_profile.dart';
 import '../providers/app_providers.dart';
 import '../utils/notification_service.dart';
 import '../l10n/app_localizations.dart'; // <-- IMPORT DELLE TRADUZIONI
+import '../widgets/disclaimer_widget.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -68,17 +69,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
-                  Icon(Icons.health_and_safety, size: 64, color: theme.colorScheme.primary),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
+                  Icon(Icons.health_and_safety, size: 48, color: theme.colorScheme.primary),
+                  const SizedBox(height: 8),
                   
                   // Titolo e sottotitolo tradotti
-                  Text(loc.welcomeTitle, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
+                  Text(loc.welcomeTitle, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 24)),
+                  const SizedBox(height: 4),
                   Text(loc.welcomeSubtitle, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 12),
+                  const DisclaimerWidget(margin: EdgeInsets.zero),
+                  const SizedBox(height: 16),
                   
                   // Selettore sesso tradotto
                   SegmentedButton<String>(
@@ -97,23 +100,23 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     selected: {_gender},
                     onSelectionChanged: (set) => setState(() => _gender = set.first),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   
                   // Slider con titoli e unità di misura tradotte
                   _buildPreciseSlider(title: loc.weightLabel, value: _weight, min: 40, max: 150, step: 1, unit: loc.unitKg, theme: theme, onChanged: (v) => setState(() => _weight = v)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 4),
                   _buildPreciseSlider(title: loc.heightLabel, value: _height, min: 140, max: 220, step: 1, unit: loc.unitCm, theme: theme, onChanged: (v) => setState(() => _height = v)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 4),
                   _buildPreciseSlider(title: loc.ageLabel, value: _age.toDouble(), min: 18, max: 99, step: 1, unit: loc.unitYears, theme: theme, onChanged: (v) => setState(() => _age = v.toInt())),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   
                   // Neopatentato Switch
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12)),
                     child: SwitchListTile(
-                      activeColor: theme.colorScheme.primary,
+                      activeThumbColor: theme.colorScheme.primary,
                       title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text(loc.newDriverDesc, style: const TextStyle(fontSize: 12)),
                       value: _isNewDriver,
@@ -121,12 +124,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     ),
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   
                   // Disclaimer tradotto
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: theme.colorScheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
                     child: CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       controlAffinity: ListTileControlAffinity.leading,
@@ -141,7 +144,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   
                   // Bottone "Inizia" tradotto
                   SizedBox(
@@ -161,7 +164,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       child: Text(loc.startBtn, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

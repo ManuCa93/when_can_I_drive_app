@@ -6,6 +6,7 @@ class UserProfile {
   final bool isNewDriver;
   final bool isOnboarded;
   final bool isLoading;
+  final bool use24HourFormat;
 
   double get legalLimit => isNewDriver ? 0.0 : 0.5;
 
@@ -17,6 +18,7 @@ class UserProfile {
     this.isNewDriver = false,
     this.isOnboarded = false,
     this.isLoading = false,
+    this.use24HourFormat = true,
   });
 
   UserProfile copyWith({
@@ -27,6 +29,7 @@ class UserProfile {
     bool? isNewDriver,
     bool? isOnboarded,
     bool? isLoading,
+    bool? use24HourFormat,
   }) {
     return UserProfile(
       weight: weight ?? this.weight,
@@ -36,6 +39,7 @@ class UserProfile {
       isNewDriver: isNewDriver ?? this.isNewDriver,
       isOnboarded: isOnboarded ?? this.isOnboarded,
       isLoading: isLoading ?? this.isLoading,
+      use24HourFormat: use24HourFormat ?? this.use24HourFormat,
     );
   }
 
@@ -49,6 +53,7 @@ class UserProfile {
         isNewDriver: map['isNewDriver'] ?? false,
         isOnboarded: map['isOnboarded'] ?? false,
         isLoading: false,
+        use24HourFormat: map['use24HourFormat'] ?? true,
       );
     } catch (e) {
       return UserProfile(
@@ -59,6 +64,7 @@ class UserProfile {
         isNewDriver: false,
         isOnboarded: false,
         isLoading: false,
+        use24HourFormat: true,
       );
     }
   }
@@ -67,5 +73,6 @@ class UserProfile {
   Map<String, dynamic> toMap() => {
     'weight': weight, 'height': height, 'age': age,
     'gender': gender, 'isNewDriver': isNewDriver, 'isOnboarded': isOnboarded,
+    'use24HourFormat': use24HourFormat,
   };
 }

@@ -26,10 +26,14 @@ class BacCalculator {
 
       // 2. Aggiungiamo il nuovo drink
       double stomachFactor = 1.0;
-      if (drink.stomachState == StomachState.normal) stomachFactor = 0.9;
-      else if (drink.stomachState == StomachState.full) {
-        if (drink.hoursSinceMeal < 2) stomachFactor = 0.75;
-        else stomachFactor = 0.85;
+      if (drink.stomachState == StomachState.normal) {
+        stomachFactor = 0.9;
+      } else if (drink.stomachState == StomachState.full) {
+        if (drink.hoursSinceMeal < 2) {
+          stomachFactor = 0.75;
+        } else {
+          stomachFactor = 0.85;
+        }
       }
       final gramsAlcohol = drink.volume * (drink.abv / 100) * 0.8 * stomachFactor;
       currentBac += gramsAlcohol / (user.weight * r);
@@ -90,10 +94,14 @@ class BacCalculator {
       }
 
       double stomachFactor = 1.0;
-      if (drink.stomachState == StomachState.normal) stomachFactor = 0.9;
-      else if (drink.stomachState == StomachState.full) {
-        if (drink.hoursSinceMeal < 2) stomachFactor = 0.75;
-        else stomachFactor = 0.85;
+      if (drink.stomachState == StomachState.normal) {
+        stomachFactor = 0.9;
+      } else if (drink.stomachState == StomachState.full) {
+        if (drink.hoursSinceMeal < 2) {
+          stomachFactor = 0.75;
+        } else {
+          stomachFactor = 0.85;
+        }
       }
       final gramsAlcohol = drink.volume * (drink.abv / 100) * 0.8 * stomachFactor;
       currentBac += gramsAlcohol / (user.weight * r);

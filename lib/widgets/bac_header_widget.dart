@@ -53,7 +53,8 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
           : BacCalculator.timeUntilSober(currentBac);
       
       final targetDateTime = DateTime.now().add(timerDuration);
-      final targetTimeText = DateFormat('HH:mm').format(targetDateTime);
+      final timeFormat = user.use24HourFormat ? 'HH:mm' : 'h:mm a';
+      final targetTimeText = DateFormat(timeFormat).format(targetDateTime);
       final currentBacString = currentBac.toStringAsFixed(2);
 
       if (_lastBacString != currentBacString || _lastTargetTime != targetTimeText) {
@@ -136,7 +137,8 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
     }
 
     final targetDateTime = DateTime.now().add(timerDuration);
-    final targetTimeText = DateFormat('HH:mm', Localizations.localeOf(context).languageCode).format(targetDateTime);
+    final timeFormat = user.use24HourFormat ? 'HH:mm' : 'h:mm a';
+    final targetTimeText = DateFormat(timeFormat, Localizations.localeOf(context).languageCode).format(targetDateTime);
 
     return Column(
       children: [
@@ -153,7 +155,7 @@ class _BacHeaderWidgetState extends ConsumerState<BacHeaderWidget> {
               percent: animatedValue, 
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: circleColor,
-              backgroundColor: Colors.grey.withOpacity(0.2),
+              backgroundColor: Colors.grey.withValues(alpha: 0.2),
               center: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

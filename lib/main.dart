@@ -27,7 +27,7 @@ class SoberTrackApp extends ConsumerWidget {
     final user = ref.watch(userProvider);
 
     return MaterialApp(
-      title: 'SoberTrack',
+      title: 'Enjoy the Night',
       debugShowCheckedModeBanner: false,
       
       // --- MAGIA DELLE LINGUE QUI ---

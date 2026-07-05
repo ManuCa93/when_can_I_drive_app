@@ -105,7 +105,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 24),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                        decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -134,10 +134,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 24),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          color: _isWaterDrank ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1), 
+                          color: _isWaterDrank ? Colors.green.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1), 
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: _isWaterDrank ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3)
+                            color: _isWaterDrank ? Colors.green.withValues(alpha: 0.3) : Colors.blue.withValues(alpha: 0.3)
                           )
                         ),
                         child: Row(
@@ -246,12 +246,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               );
                             },
                             leading: CircleAvatar(
-                              backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                               child: Icon(_getDrinkIcon(drink.name), color: theme.colorScheme.primary),
                             ),
                             title: Text(_getTranslatedDrinkName(drink.name, loc), style: const TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text("${drink.volume.toInt()} ml • ${drink.abv.toStringAsFixed(2)}% ABV"),
-                            trailing: Text(DateFormat('HH:mm').format(drink.timestamp), style: const TextStyle(color: Colors.grey)),
+                            trailing: Text(DateFormat(user.use24HourFormat ? 'HH:mm' : 'h:mm a').format(drink.timestamp), style: const TextStyle(color: Colors.grey)),
                           ),
                         ),
                       );

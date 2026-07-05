@@ -300,7 +300,7 @@ class _AddDrinkBottomSheetState extends ConsumerState<AddDrinkBottomSheet> {
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                   selected: isSelected,
-                  selectedColor: theme.colorScheme.primary.withOpacity(0.15),
+                  selectedColor: theme.colorScheme.primary.withValues(alpha: 0.15),
                   onSelected: (_) => _selectCategory(cat),
                 );
               }).toList(),

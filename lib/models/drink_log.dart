@@ -25,7 +25,7 @@ class DrinkLog {
       'name': name,
       'volume': volume,
       'abv': abv,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp': timestamp.toUtc().toIso8601String(),
       'stomachState': stomachState.index,
       'hoursSinceMeal': hoursSinceMeal,
     };
@@ -38,7 +38,7 @@ class DrinkLog {
         name: map['name'] ?? 'Sconosciuto',
         volume: (map['volume'] ?? 0.0).toDouble(),
         abv: (map['abv'] ?? 0.0).toDouble(),
-        timestamp: map['timestamp'] != null ? DateTime.parse(map['timestamp']) : DateTime.now(),
+        timestamp: map['timestamp'] != null ? DateTime.parse(map['timestamp']).toLocal() : DateTime.now(),
         stomachState: map['stomachState'] != null && map['stomachState'] >= 0 && map['stomachState'] < StomachState.values.length
             ? StomachState.values[map['stomachState']]
             : StomachState.normal,

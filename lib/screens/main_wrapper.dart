@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'history_screen.dart';
@@ -60,10 +59,10 @@ class _MainWrapperState extends State<MainWrapper> {
                 width: 120, // Larghezza fissa per precisione millimetrica
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[850] : const Color(0xFFEBEBEB).withOpacity(0.98),
+                  color: isDark ? Colors.grey[850] : const Color(0xFFEBEBEB).withValues(alpha: 0.98),
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 15, offset: const Offset(0, 8)),
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 15, offset: const Offset(0, 8)),
                   ],
                 ),
                 child: Stack(
@@ -82,7 +81,7 @@ class _MainWrapperState extends State<MainWrapper> {
                           color: isDark ? Colors.grey[700] : Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)
+                            BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4)
                           ],
                         ),
                       ),
@@ -126,7 +125,7 @@ class _MainWrapperState extends State<MainWrapper> {
                               color: Colors.orange[600],
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
-                                BoxShadow(color: Colors.orange.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 6)),
+                                BoxShadow(color: Colors.orange.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 6)),
                               ],
                             ),
                             child: const Icon(Icons.add_rounded, color: Colors.white, size: 30),

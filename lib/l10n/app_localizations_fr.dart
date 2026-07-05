@@ -264,4 +264,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get calculationExplanationBody =>
       'Cette application utilise la formule de Widmark modifiée pour estimer mathématiquement votre taux d\'alcool dans le sang (BAC).\n\nCE QUI AFFECTE LE CALCUL :\n• Le poids et le sexe (ils déterminent la quantité d\'eau dans votre corps).\n• Le volume et le degré d\'alcool.\n• L\'état de l\'estomac AU MOMENT de la consommation (la nourriture ralentit l\'absorption de l\'alcool).\n\nCE QUI NE L\'AFFECTE PAS (Mythes) :\n• Manger APRÈS avoir bu : l\'alcool est déjà dans le sang, la nourriture ne l\'absorbe pas et n\'aide pas le foie à l\'éliminer.\n• Boire du café, prendre une douche froide ou boire beaucoup d\'eau (l\'eau prévient la déshydratation mais ne fait pas baisser l\'alcoolémie).\n• Seul le TEMPS permet au foie de métaboliser l\'alcool (environ 0.15 g/l par heure).';
+
+  @override
+  String get timeFormatTitle => '24-hour Time';
+
+  @override
+  String get timeFormatDesc =>
+      'Switch between 12-hour (AM/PM) and 24-hour time format';
 }

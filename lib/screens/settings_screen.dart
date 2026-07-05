@@ -18,6 +18,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   late int _age;
   late String _gender;
   late bool _isNewDriver;
+  late bool _use24HourFormat;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _age = currentUser.age;
     _gender = currentUser.gender;
     _isNewDriver = currentUser.isNewDriver;
+    _use24HourFormat = currentUser.use24HourFormat;
   }
 
   Widget _buildPreciseSlider({
@@ -141,13 +143,28 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 // Neopatentato Switch
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12)),
                   child: SwitchListTile(
-                    activeColor: theme.colorScheme.primary,
+                    activeThumbColor: theme.colorScheme.primary,
                     title: Text(loc.newDriver, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(loc.newDriverDesc, style: const TextStyle(fontSize: 12)),
                     value: _isNewDriver,
                     onChanged: (val) => setState(() => _isNewDriver = val),
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Formato Ora Switch
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12)),
+                  child: SwitchListTile(
+                    activeThumbColor: theme.colorScheme.primary,
+                    title: Text(loc.timeFormatTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(loc.timeFormatDesc, style: const TextStyle(fontSize: 12)),
+                    value: _use24HourFormat,
+                    onChanged: (val) => setState(() => _use24HourFormat = val),
                   ),
                 ),
                 
@@ -164,7 +181,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () {
                       // Salviamo i nuovi dati e torniamo indietro
                       ref.read(userProvider.notifier).updateUser(UserProfile(
-                        weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true
+                        weight: _weight, height: _height, age: _age, gender: _gender, isNewDriver: _isNewDriver, isOnboarded: true, use24HourFormat: _use24HourFormat
                       ));
                       Navigator.pop(context);
                     },

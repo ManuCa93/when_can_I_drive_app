@@ -264,4 +264,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get calculationExplanationBody =>
       'Diese App verwendet die modifizierte Widmark-Formel, um Ihre Blutalkoholkonzentration (BAK) mathematisch zu schätzen.\n\nWAS DIE BERECHNUNG BEEINFLUSST:\n• Gewicht und Geschlecht (sie bestimmen den Wassergehalt in Ihrem Körper).\n• Volumen und Alkoholgehalt.\n• Magenzustand ZUM ZEITPUNKT des Trinkens (Nahrung verlangsamt die Alkoholaufnahme).\n\nWAS SIE NICHT BEEINFLUSST (Mythen):\n• Essen NACH dem Trinken: Der Alkohol ist bereits im Blutkreislauf, Nahrung absorbiert ihn nicht und hilft der Leber nicht beim Abbau.\n• Kaffee trinken, kalt duschen oder viel Wasser trinken (Wasser verhindert Dehydration, senkt aber nicht die BAK).\n• Nur ZEIT ermöglicht es der Leber, Alkohol abzubauen (ca. 0,15 g/l pro Stunde).';
+
+  @override
+  String get timeFormatTitle => '24-hour Time';
+
+  @override
+  String get timeFormatDesc =>
+      'Switch between 12-hour (AM/PM) and 24-hour time format';
 }

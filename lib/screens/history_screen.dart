@@ -211,10 +211,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       label: Text(entry.value, style: const TextStyle(fontWeight: FontWeight.bold)),
                       selected: hoursSpan == entry.key,
                       onSelected: (val) {
-                        if (val) setState(() {
+                        if (val) {
+                          setState(() {
                           hoursSpan = entry.key;
                           selectedDateRange = null;
                         });
+                        }
                       },
                       selectedColor: Colors.orange[100],
                     ),
@@ -237,7 +239,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           color: hoursSpan == null ? Colors.white : theme.colorScheme.onSurface,
                         )
                       ),
-                      backgroundColor: hoursSpan == null ? Colors.orange : theme.colorScheme.surfaceContainerHighest ?? Colors.grey.withOpacity(0.2),
+                      backgroundColor: hoursSpan == null ? Colors.orange : theme.colorScheme.surfaceContainerHighest,
                       onPressed: _pickDateRange,
                     ),
                   ),
@@ -282,7 +284,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                              _formatBottomTitle(time, totalAxisMinutes, Localizations.localeOf(context).languageCode), 
+                              _formatBottomTitle(time, totalAxisMinutes, Localizations.localeOf(context).languageCode, user.use24HourFormat), 
                               style: const TextStyle(fontSize: 10, color: Colors.grey),
                               textAlign: TextAlign.center,
                             ),
@@ -310,7 +312,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                     horizontalLines: [
                       HorizontalLine(
                         y: user.legalLimit,
-                        color: Colors.red.withOpacity(0.5),
+                        color: Colors.red.withValues(alpha: 0.5),
                         strokeWidth: 2,
                         dashArray: [5, 5],
                         label: HorizontalLineLabel(
@@ -329,7 +331,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           return [
                             VerticalLine(
                               x: _dateToX(exactSoberTime),
-                              color: Colors.green.withOpacity(0.8),
+                              color: Colors.green.withValues(alpha: 0.8),
                               strokeWidth: 2,
                               dashArray: [4, 4], 
                               label: VerticalLineLabel(
@@ -337,7 +339,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                               alignment: Alignment.bottomLeft, 
                               padding: const EdgeInsets.only(right: 6, bottom: 35), // <-- Padding aumentato a 35 per alzare il testo
                               style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
-                              labelResolver: (_) => "0.0 g/l\n${DateFormat('HH:mm', Localizations.localeOf(context).languageCode).format(exactSoberTime)}", 
+                              labelResolver: (_) => "0.0 g/l\n${DateFormat(user.use24HourFormat ? 'HH:mm' : 'h:mm a', Localizations.localeOf(context).languageCode).format(exactSoberTime)}", 
                             ),
                             )
                           ];
@@ -357,14 +359,14 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       barWidth: 4,
                       isStrokeCapRound: true,
                       dotData: const FlDotData(show: false),
-                      belowBarData: BarAreaData(show: true, color: Colors.orange.withOpacity(0.1)),
+                      belowBarData: BarAreaData(show: true, color: Colors.orange.withValues(alpha: 0.1)),
                     ),
                     // 2. LINEA PROIEZIONE FUTURA
                     LineChartBarData(
                       spots: _generateFutureSpots(drinks, user, axisStart, axisEnd),
                       isCurved: true,
                       preventCurveOverShooting: true, 
-                      color: Colors.orange.withOpacity(0.6),
+                      color: Colors.orange.withValues(alpha: 0.6),
                       barWidth: 4,
                       isStrokeCapRound: true,
                       dashArray: [8, 6], 
@@ -392,13 +394,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ],
                   lineTouchData: LineTouchData(
                     touchTooltipData: LineTouchTooltipData(
-                      tooltipBgColor: Colors.black.withOpacity(0.8),
+                      tooltipBgColor: Colors.black.withValues(alpha: 0.8),
                       getTooltipItems: (spots) => spots.map((s) => LineTooltipItem(
                         "${s.y.toStringAsFixed(2)} g/l\n", 
                         const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
-                            text: DateFormat('HH:mm', Localizations.localeOf(context).languageCode).format(_xToDate(s.x)), 
+                            text: DateFormat(user.use24HourFormat ? 'HH:mm' : 'h:mm a', Localizations.localeOf(context).languageCode).format(_xToDate(s.x)), 
                             style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.normal)
                           )
                         ]
@@ -439,14 +441,14 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       return Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                             child: Icon(_getDrinkIcon(drink.name), color: theme.colorScheme.primary),
                           ),
                           title: Text(
                             _getTranslatedDrinkName(drink.name, loc), 
                             style: const TextStyle(fontWeight: FontWeight.bold)
                           ),
-                          subtitle: Text(DateFormat('dd MMM, HH:mm', Localizations.localeOf(context).languageCode).format(drink.timestamp)),
+                          subtitle: Text(DateFormat(user.use24HourFormat ? 'dd MMM, HH:mm' : 'dd MMM, h:mm a', Localizations.localeOf(context).languageCode).format(drink.timestamp)),
                           trailing: Text(
                             "${drink.abv.toStringAsFixed(2)}%",
                             style: const TextStyle(fontWeight: FontWeight.bold),
@@ -474,11 +476,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     return 60;                                  
   }
 
-  String _formatBottomTitle(DateTime time, double totalMinutes, String locale) {
+  String _formatBottomTitle(DateTime time, double totalMinutes, String locale, bool use24HourFormat) {
     if (totalMinutes > 43200) return DateFormat('dd MMM', locale).format(time); 
     if (totalMinutes > 2880) return DateFormat('dd MMM', locale).format(time);  
-    if (totalMinutes >= 1440) return DateFormat('HH:mm\ndd/MM', locale).format(time); 
-    return DateFormat('HH:mm', locale).format(time); 
+    if (totalMinutes >= 1440) return DateFormat(use24HourFormat ? 'HH:mm\ndd/MM' : 'h:mm a\ndd/MM', locale).format(time); 
+    return DateFormat(use24HourFormat ? 'HH:mm' : 'h:mm a', locale).format(time); 
   }
 
   double _calculateMaxY(drinks, user, DateTime start, DateTime end) {
@@ -503,10 +505,15 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
     double totalAxisMinutes = end.difference(start).inMinutes.toDouble();
     int stepMinutes = 15;
-    if (totalAxisMinutes > 43200) stepMinutes = 1440; 
-    else if (totalAxisMinutes > 10080) stepMinutes = 360; 
-    else if (totalAxisMinutes > 2880) stepMinutes = 120; 
-    else if (totalAxisMinutes > 1440) stepMinutes = 60; 
+    if (totalAxisMinutes > 43200) {
+      stepMinutes = 1440;
+    } else if (totalAxisMinutes > 10080) {
+      stepMinutes = 360; 
+    } else if (totalAxisMinutes > 2880) {
+      stepMinutes = 120; 
+    } else if (totalAxisMinutes > 1440) {
+      stepMinutes = 60; 
+    } 
 
     for (int i = 0; i <= totalHistMinutes; i += stepMinutes) {
       DateTime t = start.add(Duration(minutes: i));
